@@ -132,7 +132,7 @@ td.num,th.num{text-align:right}
 .pyr .emp .r1 span{white-space:nowrap}
 @media (max-width:520px){.pyr .emp{flex:1 1 0;max-width:25%;padding:5px 4px}.pyr .emp.top{max-width:45%}.pyr .emp .dept{display:none}.pyr .emp .r1{flex-direction:column;align-items:center;gap:0;line-height:1.3}}
 .joseon{display:flex;flex-direction:column;gap:6px;align-items:center}
-.jrow{display:grid;grid-template-columns:64px 1fr;gap:8px;align-items:center;width:100%}
+.jrow{display:grid;grid-template-columns:70px 1fr;gap:8px;align-items:center;width:100%}
 .jrow .cls{font-family:var(--display);font-size:17px;text-align:right;color:var(--ink);line-height:1.1}
 .jrow .cls small{display:block;font-family:inherit;font-size:11px;color:var(--muted);font-weight:400}
 .jrow .ppl{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:6px;border-radius:10px;background:var(--bg);margin:0 auto}
@@ -259,9 +259,9 @@ td.num,th.num{text-align:right}
   </section>
 
   <section class="card" id="joseon-sec">
-    <div class="sec-head"><h2>증바람 조선</h2><span class="hint">티어가 곧 신분이에요</span></div>
+    <div class="sec-head"><h2>증바람 신라</h2><span class="hint">골품제: 티어가 곧 신분, 순위가 곧 관등</span></div>
     <div class="joseon" id="joseon"></div>
-    <p class="note">1등은 임금, S·A는 양반, B는 중인, C는 상민, 칼바람 기록이 없으면 천민이에요. 벼슬은 그 사람이 멤버 중 가장 앞서는 지표로 정해요.</p>
+    <p class="note">1등은 성골 왕, S·A는 진골, B는 6두품, C는 4두품, 칼바람 기록이 없으면 노비예요. 관등은 순위대로 1관등 이벌찬부터 내려가는데, 실제 골품제처럼 신분마다 오를 수 있는 한계가 있어요. 6두품은 6관등 아찬, 4두품은 12관등 대사가 끝이에요.</p>
   </section>
 
   <section class="card" id="scrim">
@@ -483,19 +483,18 @@ function renderCorp(){
   SCRIM.extra.forEach(x=>org.append(card("알바",x.name,"내전 인력 지원","시급 협의","part")));
 }
 
-// ---- 증바람 조선 ----
-const JOB={
-  양반:{ds:"병조판서",ts:"훈련대장",kp:"영의정",a:"호조판서",kda:"형조판서"},
-  중인:{ds:"포도청 종사관",ts:"의관",kp:"역관",a:"서리",kda:"율관"},
-  상민:{ds:"사냥꾼",ts:"짐꾼",kp:"보부상",a:"농민",kda:"장인"}};
-function deptKey(p){let best="ds",bz=-1e9;DEPTS.forEach(d=>{const v=PLAYERS.map(x=>x.stats[d.k]);const mu=v.reduce((a,b)=>a+b,0)/v.length;const sd=Math.sqrt(v.reduce((a,b)=>a+(b-mu)**2,0)/v.length)||1;const z=(p.stats[d.k]-mu)/sd;if(z>bz){bz=z;best=d.k;}});return best;}
+// ---- 증바람 신라 (골품제) ----
+const GWAN=["","이벌찬","이찬","잡찬","파진찬","대아찬","아찬","일길찬","사찬","급벌찬","대나마","나마","대사","사지","길사","대오","소오","조위"];
+const ROBE=n=>n<=5?"자색":n<=9?"비색":n<=11?"청색":"황색";
 function renderJoseon(){
   const box=document.getElementById("joseon");box.textContent="";if(!PLAYERS.length)return;
-  const groups=[["임금","왕","king",[PLAYERS[0]]],["양반","사대부","",PLAYERS.slice(1).filter(p=>p.tier==="S"||p.tier==="A")],["중인","기술직","",PLAYERS.slice(1).filter(p=>p.tier==="B")],["상민","백성","",PLAYERS.slice(1).filter(p=>p.tier==="C")],["천민","노비","low",SCRIM.extra]];
-  groups.forEach(([cls,sub,c,list])=>{if(!list.length)return;const row=el("div","jrow"+(c?" "+c:""));const h=el("div","cls",cls);h.append(el("small",null,sub));
+  const rest=PLAYERS.slice(1);
+  const groups=[["성골","왕족","king",[PLAYERS[0]],0],["진골","귀족","",rest.filter(p=>p.tier==="S"||p.tier==="A"),1],["6두품","득난","",rest.filter(p=>p.tier==="B"),6],["4두품","말단","",rest.filter(p=>p.tier==="C"),12],["노비","천민","low",SCRIM.extra,0]];
+  let next=1;
+  groups.forEach(([cls,sub,c,list,cap])=>{if(!list.length)return;const row=el("div","jrow"+(c?" "+c:""));const h=el("div","cls",cls);h.append(el("small",null,sub));
     const ppl=el("div","ppl");list.forEach(p=>{const j=el("div","jp");let t;
-      if(cls==="임금")t="임금";else if(cls==="천민")t="내전 머릿수";else t=JOB[cls][deptKey(p)];
-      j.append(el("div","jt",t),el("div","jn",p.name));if(p.score!=null)j.title=p.name+" · "+p.score.toFixed(1)+"점 · "+p.tier+"티어";ppl.append(j);});
+      if(cls==="성골")t="왕";else if(cls==="노비")t="관등 없음";else{next=Math.max(next,cap);t=next+"관등 "+GWAN[Math.min(next,17)];j.title=ROBE(next)+" 관복 · "+p.score.toFixed(1)+"점";next++;}
+      j.append(el("div","jt",t),el("div","jn",p.name));ppl.append(j);});
     row.append(h,ppl);box.append(row);});
 }
 
