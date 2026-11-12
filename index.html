@@ -80,6 +80,22 @@ td.num,th.num{text-align:right}
 .tier-A{color:var(--tier-a);background:var(--tier-a-bg)}
 .tier-B{color:var(--tier-b);background:var(--tier-b-bg)}
 .tier-C{color:var(--tier-c);background:var(--tier-c-bg)}
+.tier-D{color:var(--bad);background:transparent;border:1px solid var(--bad)}
+.picks{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pick{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;cursor:pointer;user-select:none;background:var(--surface)}
+.pick input{margin:0;accent-color:var(--accent)}
+.pick.on{border-color:var(--accent);background:var(--accent-soft)}
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.team{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.team h3{margin:0 0 8px;font-size:15px;display:flex;justify-content:space-between;align-items:baseline}
+.team h3 span{font-size:13px;color:var(--muted);font-weight:500}
+.team ul{list-style:none;margin:0;padding:0}
+.team li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.team li:last-child{border:0}
+.team li .tier{width:22px;height:22px;font-size:12px}
+.team li b{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:600}
+.scrim-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.scrim-foot button{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .score{font-weight:700}
 .range{min-width:150px}
 .rangebar{position:relative;height:14px;border-radius:7px;background:linear-gradient(var(--line),var(--line)) center/100% 2px no-repeat}
@@ -179,6 +195,12 @@ td.num,th.num{text-align:right}
       </table>
     </div>
     <div id="detail"></div>
+  </section>
+
+  <section class="card" id="scrim">
+    <div class="sec-head"><h2>내전 황밸</h2><span class="hint">10명을 고르면 점수 합이 가장 비슷하게 나눠요</span></div>
+    <div class="picks" id="picks"></div>
+    <div id="scrimout"></div>
   </section>
 
   <section class="card" id="graphs">
@@ -313,6 +335,35 @@ function applyFilter(){
 }
 document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{showGuests=b.dataset.g==="1";try{localStorage.setItem("aram-guests",showGuests?"1":"0");}catch(e){}applyFilter();}));
 
+// ---- 내전 황밸 ----
+let SCRIM={extra:[],default:[]},picked=null,altIdx=0;
+function scrimPool(){return[...ALL.map(p=>({name:p.name,score:p.score,tier:p.tier,note:p.games+"판"+(p.fewGames?" · 판수 적음":"")})),...SCRIM.extra.map(x=>({...x}))];}
+function renderScrim(){
+  const pool=scrimPool();
+  if(!picked){let saved=null;try{saved=JSON.parse(localStorage.getItem("aram-scrim")||"null");}catch(e){}
+    const def=(saved&&saved.length?saved:SCRIM.default).filter(n=>pool.some(p=>p.name===n));picked=new Set(def.length?def:pool.slice(0,10).map(p=>p.name));}
+  const pk=document.getElementById("picks");pk.textContent="";
+  pool.forEach(p=>{const lab=el("label","pick"+(picked.has(p.name)?" on":""));const cb=document.createElement("input");cb.type="checkbox";cb.checked=picked.has(p.name);
+    cb.onchange=()=>{cb.checked?picked.add(p.name):picked.delete(p.name);altIdx=0;try{localStorage.setItem("aram-scrim",JSON.stringify([...picked]));}catch(e){}renderScrim();};
+    lab.append(cb,document.createTextNode(p.name));pk.append(lab);});
+  const out=document.getElementById("scrimout");out.textContent="";
+  const sel=pool.filter(p=>picked.has(p.name));
+  if(sel.length!==10){out.append(el("p","hint",`지금 ${sel.length}명 골랐어요. 딱 10명을 골라 주세요.`));return;}
+  sel.sort((a,b)=>b.score-a.score);
+  const splits=[];const rest=sel.slice(1);
+  const rec=(start,cur)=>{if(cur.length===4){const A=[sel[0],...cur],B=sel.filter(p=>!A.includes(p));const sa=A.reduce((s,p)=>s+p.score,0),sb=B.reduce((s,p)=>s+p.score,0);splits.push({A,B,sa,sb,diff:Math.abs(sa-sb)});return;}
+    for(let i=start;i<rest.length;i++){cur.push(rest[i]);rec(i+1,cur);cur.pop();}};
+  rec(0,[]);splits.sort((a,b)=>a.diff-b.diff);
+  const top=splits.slice(0,5);if(altIdx>=top.length)altIdx=0;const s=top[altIdx];
+  const teams=el("div","teams");
+  [["1팀",s.A,s.sa],["2팀",s.B,s.sb]].forEach(([t,ps,sum])=>{const box=el("div","team");const h=el("h3",null,t);h.append(el("span",null,"합계 "+sum.toFixed(1)));box.append(h);
+    const ul=el("ul");ps.forEach(p=>{const li=el("li");li.append(el("span","tier tier-"+p.tier,p.tier),el("span",null,p.name));if(p.note)li.append(el("span","hint",p.note));li.append(el("b",null,p.score.toFixed(1)));ul.append(li);});box.append(ul);teams.append(box);});
+  out.append(teams);
+  const f=el("div","scrim-foot");f.append(el("span","hint",`${altIdx+1}번째로 균형 잡힌 조합 · 점수 차 ${s.diff.toFixed(1)}`));
+  const nb=el("button",null,"다른 조합 보기");nb.onclick=()=>{altIdx=(altIdx+1)%top.length;renderScrim();};f.append(nb);out.append(f);
+  out.append(el("p","note","칼바람 점수 기준이라 협곡 포지션 실력은 반영돼 있지 않아요. 순위가 바뀌면 이 조합도 같이 바뀌어요."));
+}
+
 // ---- 그래프 ----
 const SVGNS="http://www.w3.org/2000/svg";
 const sv=(tag,attrs,text)=>{const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;return e;};
@@ -379,6 +430,7 @@ let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>
 
 fetch("data/leaderboard.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
   DATA=d;ALL=d.players;applyFilter();
+  fetch("data/scrim.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(x=>{if(x)SCRIM=x;}).catch(()=>{}).finally(renderScrim);
 }).catch(e=>{console.error(e);const u=document.getElementById("updated");u.textContent="순위 데이터를 불러오지 못했어요. data/leaderboard.json이 저장소에 있는지 확인해 주세요.";u.classList.add("err");});
 </script>
 <script src="admin.js"></script>
