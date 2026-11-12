@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>칼바람 리더보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Howling Abyss: frost bridge over a dark abyss. Ranking first, detail below. */
+:root{
+  --bg:#eef3f7; --surface:#ffffff; --ink:#14212e; --muted:#5d6f80; --line:#d5dfe8;
+  --accent:#2f7fc1; --accent-soft:#dcecf9;
+  --tier-s:#c98a12; --tier-s-bg:#fbf0d6; --tier-a:#2f7fc1; --tier-a-bg:#dcecf9;
+  --tier-b:#3f8f6b; --tier-b-bg:#dcf1e6; --tier-c:#7a8696; --tier-c-bg:#e8edf2;
+  --good:#3f8f6b; --bad:#c2453b;
+  --display:"Black Han Sans","IBM Plex Sans KR",system-ui,sans-serif;
+  --body:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1620; --surface:#14212e; --ink:#e6eef5; --muted:#93a5b6; --line:#25384a;
+    --accent:#6fb4ee; --accent-soft:#183650;
+    --tier-s:#f0bb4a; --tier-s-bg:#3a2d0f; --tier-a:#6fb4ee; --tier-a-bg:#183650;
+    --tier-b:#6cc79c; --tier-b-bg:#163a2a; --tier-c:#a3afbd; --tier-c-bg:#223140;
+    --good:#6cc79c; --bad:#f0857b;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1620; --surface:#14212e; --ink:#e6eef5; --muted:#93a5b6; --line:#25384a;
+  --accent:#6fb4ee; --accent-soft:#183650;
+  --tier-s:#f0bb4a; --tier-s-bg:#3a2d0f; --tier-a:#6fb4ee; --tier-a-bg:#183650;
+  --tier-b:#6cc79c; --tier-b-bg:#163a2a; --tier-c:#a3afbd; --tier-c-bg:#223140;
+  --good:#6cc79c; --bad:#f0857b;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 16px 64px;display:grid;gap:28px}
+h1,h2{font-family:var(--display);font-weight:400;letter-spacing:.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.1}
+h2{font-size:22px}
+.lead{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px}
+.hint{font-size:13px;color:var(--muted)}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12.5px;font-weight:600;color:var(--muted)}
+th button{all:unset;cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+th button:focus-visible,.row:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+th button[aria-sort="ascending"]::after{content:"▲";font-size:9px}
+th button[aria-sort="descending"]::after{content:"▼";font-size:9px}
+td.num,th.num{text-align:right}
+.row{cursor:pointer}
+.row:hover td{background:var(--accent-soft)}
+.row.me td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.rank{font-family:var(--display);font-size:18px;width:36px}
+.name{font-weight:600}
+.new{font-size:11px;color:var(--muted);font-weight:500;margin-left:6px}
+.tier{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;font-family:var(--display);font-size:15px}
+.tier-S{color:var(--tier-s);background:var(--tier-s-bg)}
+.tier-A{color:var(--tier-a);background:var(--tier-a-bg)}
+.tier-B{color:var(--tier-b);background:var(--tier-b-bg)}
+.tier-C{color:var(--tier-c);background:var(--tier-c-bg)}
+.score{font-weight:700}
+.range{min-width:150px}
+.rangebar{position:relative;height:14px;border-radius:7px;background:linear-gradient(var(--line),var(--line)) center/100% 2px no-repeat}
+.rangebar i{position:absolute;top:3px;height:8px;border-radius:4px;background:var(--accent-soft);border:1px solid var(--accent)}
+.rangebar em{position:absolute;top:0;width:3px;height:14px;margin-left:-1.5px;border-radius:2px;background:var(--accent)}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
+.detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.dbox{border:1px solid var(--line);border-radius:10px;padding:12px}
+.dbox h3{margin:0 0 6px;font-size:13px;color:var(--muted);font-weight:600}
+.champs{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;gap:6px;align-items:baseline;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13.5px}
+.chip b{font-variant-numeric:tabular-nums}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.tierbox{border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:6px}
+.tierbox p{margin:0;font-size:13.5px;color:var(--muted)}
+.tierbox .who{color:var(--ink);font-weight:600}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.cbar{display:flex;align-items:center;gap:8px}
+.cbar span{display:block;height:8px;border-radius:4px;background:var(--accent)}
+.cbar.lo span{background:var(--bad)}
+.verdict{font-size:12.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--line)}
+.v-good{color:var(--good);border-color:currentColor}
+.v-bad{color:var(--bad);border-color:currentColor}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.mbox{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.mbox b{font-family:var(--display);font-weight:400;font-size:20px;display:block}
+.mbox span{font-size:13px;color:var(--muted)}
+.sel{font:inherit;font-size:13.5px;padding:5px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.err{color:var(--bad)}
+.note{font-size:13.5px;color:var(--muted);margin:12px 0 0;max-width:70ch}
+@media (prefers-reduced-motion:no-preference){.row td{transition:background .15s}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <h1>칼바람 리더보드</h1>
+    <p class="lead">우리 멤버들의 칼바람 나락 기록을 op.gg 방식에 가깝게 점수화한 순위예요. 매일 오전 9시에 전날 판이 반영돼요. 행을 누르면 그 사람의 기록이 보여요.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <section class="card" id="ranking">
+    <div class="sec-head">
+      <h2>종합 순위</h2>
+      <span class="hint" id="updated">불러오는 중…</span>
+    </div>
+    <div class="scroll">
+      <table id="board">
+        <thead><tr>
+          <th><button data-k="rank" aria-sort="ascending">순위</button></th>
+          <th><button data-k="name">닉네임</button></th>
+          <th><button data-k="tier">티어</button></th>
+          <th class="num"><button data-k="score">점수</button></th>
+          <th class="range">실력 범위 (95%)</th>
+          <th class="num"><button data-k="games">판수</button></th>
+          <th class="num"><button data-k="wr">승률</button></th>
+          <th class="num"><button data-k="mvp">MVP</button></th>
+          <th class="num"><button data-k="ace">ACE</button></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div id="detail"></div>
+  </section>
+
+  <section class="card" id="tiers">
+    <div class="sec-head"><h2>티어</h2><span class="hint">S 6.2점 이상 · A 5.5 · B 5.0 · C 그 아래</span></div>
+    <div class="tiers" id="tierlist"></div>
+  </section>
+
+  <section class="card" id="champions">
+    <div class="sec-head">
+      <h2>챔피언별 성적</h2>
+      <label class="hint" for="who">플레이어 <select class="sel" id="who"></select></label>
+    </div>
+    <div class="scroll">
+      <table id="ctable">
+        <thead><tr><th>챔피언</th><th class="num">판수</th><th>평균 점수</th><th>평가</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note">평가는 2판 이상 한 챔피언만 매겨요. 6점 이상 무조건 잡기, 5점 이상 좋음, 4점 이상 보통, 3점 이상 안 맞음, 그 아래는 리롤이에요.</p>
+  </section>
+
+  <section class="card" id="method">
+    <div class="sec-head"><h2>계산 방식</h2><span class="hint">op.gg 공식이 비공개라 근사치예요</span></div>
+    <div class="method">
+      <div class="mbox"><b>30%</b><span>딜량과 받은 피해 중 10명 안에서 더 높은 순위</span></div>
+      <div class="mbox"><b>25%</b><span>킬 관여율</span></div>
+      <div class="mbox"><b>20%</b><span>KDA</span></div>
+      <div class="mbox"><b>15%</b><span>승리</span></div>
+      <div class="mbox"><b>10%</b><span>골드</span></div>
+      <div class="mbox"><b>93%</b><span>실제 op.gg MVP·ACE 배지와 일치 (29판 중 27판)</span></div>
+    </div>
+    <p class="note">판마다 양 팀 10명을 비교해 0~10점을 주고, 이긴 팀 최고점을 MVP, 진 팀 최고점을 ACE로 뽑아요. 다시하기 판은 빼요. 판수가 20판보다 적은 멤버는 순위가 쉽게 바뀔 수 있어요.</p>
+  </section>
+</main>
+
+<script>
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
+const pct=n=>Math.round(n*100)+"%";
+const ME="Rstudio";
+let PLAYERS=[],sortK="rank",sortDir=1,openName=null;
+const tierOrder={S:0,A:1,B:2,C:3};
+const MIN=2,MAX=9;const pos=v=>((Math.min(MAX,Math.max(MIN,v))-MIN)/(MAX-MIN)*100)+"%";
+function val(p,k){if(k==="wr")return p.wins/p.games;if(k==="tier")return tierOrder[p.tier];return p[k];}
+
+function renderStats(d){
+  const stats=document.getElementById("stats");stats.textContent="";
+  const leader=PLAYERS[0], mvpKing=[...PLAYERS].sort((a,b)=>b.mvp-a.mvp)[0];
+  [[String(d.matchCount),"분석한 판"],[String(PLAYERS.length),"멤버"],[leader.name,"현재 1위"],[mvpKing.name+" "+mvpKing.mvp+"회","MVP 최다"]]
+   .forEach(([b,s])=>{const x=el("div","stat");x.append(el("b",null,b),el("span",null,s));stats.append(x);});
+  const t=new Date(d.updatedAt);
+  document.getElementById("updated").textContent="마지막 업데이트 "+t.toLocaleString("ko-KR",{timeZone:"Asia/Seoul",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function renderBoard(){
+  const tb=document.querySelector("#board tbody");tb.textContent="";
+  [...PLAYERS].sort((a,b)=>{const x=val(a,sortK),y=val(b,sortK);return (x>y?1:x<y?-1:0)*sortDir;}).forEach(p=>{
+    const tr=el("tr","row"+(p.name===ME?" me":""));tr.tabIndex=0;tr.id="p-"+p.rank;
+    const n=el("td","name",p.name);if(p.fewGames)n.append(el("span","new","판수 적음"));
+    const t=el("td");t.append(el("span","tier tier-"+p.tier,p.tier));
+    const rg=el("td","range");const bar=el("div","rangebar");const iv=el("i");iv.style.left=pos(p.lo);iv.style.width=((Math.min(MAX,p.hi)-Math.max(MIN,p.lo))/(MAX-MIN)*100)+"%";
+    const pt=el("em");pt.style.left=pos(p.score);bar.append(iv,pt);
+    const lab=el("div","axis");lab.append(el("span",null,p.lo.toFixed(1)),el("span",null,p.hi.toFixed(1)));rg.append(bar,lab);
+    tr.append(el("td","rank",String(p.rank)),n,t,el("td","num score",p.score.toFixed(2)),rg,el("td","num",String(p.games)),el("td","num",pct(p.wins/p.games)),el("td","num",String(p.mvp)),el("td","num",String(p.ace)));
+    const open=()=>{openName=openName===p.name?null:p.name;renderDetail();};
+    tr.addEventListener("click",open);tr.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
+    tb.append(tr);
+  });
+  document.querySelectorAll("#board th button").forEach(b=>b.setAttribute("aria-sort",b.dataset.k===sortK?(sortDir===1?"ascending":"descending"):"none"));
+}
+document.querySelectorAll("#board th button").forEach(b=>b.addEventListener("click",()=>{
+  const k=b.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=(k==="rank"||k==="name"||k==="tier")?1:-1;}renderBoard();
+}));
+function renderDetail(){
+  const box=document.getElementById("detail");box.textContent="";
+  const p=PLAYERS.find(x=>x.name===openName);if(!p)return;
+  const d=el("div","detail");
+  const a=el("div","dbox");a.append(el("h3",null,p.name+" · 베스트 챔피언 (2판 이상)"));
+  const c=el("div","champs");const top=p.champions.filter(x=>x[1]>=2).slice(0,3);
+  if(top.length)top.forEach(([n,g,v])=>{const ch=el("span","chip");ch.append(el("span",null,n),el("b",null,v.toFixed(2)));c.append(ch);});
+  else c.append(el("span","hint","아직 2판 이상 한 챔피언이 없어요"));
+  a.append(c);
+  const b=el("div","dbox");b.append(el("h3",null,"최고 판"));const ch=el("span","chip");ch.append(el("span",null,p.best[0]),el("b",null,p.best[1].toFixed(1)+"점"));b.append(ch);
+  const e=el("div","dbox");e.append(el("h3",null,"기록"));e.append(el("div",null,p.games+"판 "+p.wins+"승 "+(p.games-p.wins)+"패 · MVP "+p.mvp+" · ACE "+p.ace));
+  d.append(a,b,e);box.append(d);
+}
+function renderTiers(){
+  const desc={S:"어떤 기준으로 봐도 최상위예요.",A:"상위권. 점수 차이가 작아 사실상 동급이에요.",B:"상위권과 하위권 사이예요.",C:"점수 범위가 많이 겹치는 하위권이에요."};
+  const tl=document.getElementById("tierlist");tl.textContent="";
+  ["S","A","B","C"].forEach(t=>{const who=PLAYERS.filter(p=>p.tier===t).map(p=>p.name);if(!who.length)return;
+    const b=el("div","tierbox");const h=el("div");h.append(el("span","tier tier-"+t,t));b.append(h,el("p","who",who.join(", ")),el("p",null,desc[t]));tl.append(b);});
+}
+function verdict(g,s){if(g<2)return["1판",""];if(s>=6)return["무조건 잡기"," v-good"];if(s>=5)return["좋음"," v-good"];if(s>=4)return["보통",""];if(s>=3)return["안 맞음"," v-bad"];return["리롤"," v-bad"];}
+function renderChamps(){
+  const who=document.getElementById("who").value;const p=PLAYERS.find(x=>x.name===who);
+  const tb=document.querySelector("#ctable tbody");tb.textContent="";if(!p)return;
+  const list=[...p.champions].sort((a,b)=>(b[1]>=2)-(a[1]>=2)||b[2]-a[2]);
+  list.forEach(([n,g,s])=>{const tr=el("tr");const sc=el("td");const cb=el("div","cbar"+(s<4?" lo":""));const sp=el("span");sp.style.width=Math.max(4,s/9*120)+"px";cb.append(sp,el("b",null,s.toFixed(2)));sc.append(cb);
+    const [v,cls]=verdict(g,s);const vt=el("td");vt.append(el("span","verdict"+cls,v));
+    tr.append(el("td","name",n),el("td","num",String(g)),sc,vt);tb.append(tr);});
+}
+function setupChamps(){
+  const sel=document.getElementById("who");sel.textContent="";
+  PLAYERS.forEach(p=>{const o=el("option",null,p.name);o.value=p.name;sel.append(o);});
+  sel.value=PLAYERS.some(p=>p.name===ME)?ME:PLAYERS[0].name;sel.addEventListener("change",renderChamps);renderChamps();
+}
+fetch("data/leaderboard.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
+  PLAYERS=d.players;renderStats(d);renderBoard();renderTiers();setupChamps();
+}).catch(()=>{const u=document.getElementById("updated");u.textContent="순위 데이터를 불러오지 못했어요. data/leaderboard.json이 저장소에 있는지 확인해 주세요.";u.classList.add("err");});
+</script>
+</body>
+</html>
