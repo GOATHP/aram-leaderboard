@@ -58,10 +58,18 @@ const TIERS100 = [[55, "S"], [47, "A"], [40, "B"]];
 function leaderboard(matches, members, ko) {
   const guests = new Set(members.filter(m => m.guest).map(m => m.name));
   const alias = {}; members.forEach(m => [...(m.aliases || []), m.name, (m.riotId || "").split("#")[0]].forEach(a => { if (a) alias[a] = m.name; }));
-  const rec = {}; let used = 0;
+  const rec = {}, duo = {}; let used = 0;
   for (const m of matches) {
     if (sum(m.teams.map(t => t.kills)) <= REMAKE) continue;
     const rows = scoreMatch(m); if (!rows) continue; used++;
+    for (const team of m.teams) {
+      const seen = new Map(); rows.filter(r => r.t === team && alias[r.p.name]).forEach(r => seen.set(alias[r.p.name] + "\u0000" + r.score, [alias[r.p.name], r.score]));
+      const mates = [...seen.values()].sort((x, y) => x[0] < y[0] ? -1 : x[0] > y[0] ? 1 : x[1] - y[1]);
+      for (let i = 0; i < mates.length; i++) for (let j = i + 1; j < mates.length; j++) {
+        const k = mates[i][0] + "\u0000" + mates[j][0], dd = duo[k] || (duo[k] = { games: 0, wins: 0, sum: 0 });
+        dd.games++; dd.wins += team.win ? 1 : 0; dd.sum += (mates[i][1] + mates[j][1]) / 2;
+      }
+    }
     for (const row of rows) {
       const { p, t, score: s } = row, n = alias[p.name]; if (!n) continue;
       const r = rec[n] || (rec[n] = { sc: [], wins: 0, mvp: 0, ace: 0, ch: {}, best: null, k: 0, d: 0, a: 0, dmg: 0, tkn: 0, ds: [], kp: [], ts: [] });
@@ -82,7 +90,9 @@ function leaderboard(matches, members, ko) {
       stats: { kda: r2((r.k + r.a) / Math.max(r.d, 1), 2), k: r2(r.k / n, 1), d: r2(r.d / n, 1), a: r2(r.a / n, 1), dmg: Math.round(r.dmg / n), taken: Math.round(r.tkn / n), kp: r2(100 * mean(r.kp), 1), ds: r2(100 * mean(r.ds), 1), ts: r2(100 * mean(r.ts), 1) } };
   }).sort((a, b) => b.score - a.score);
   players.forEach((p, i) => p.rank = i + 1);
-  return { updatedAt: new Date().toISOString().replace(/\.\d+Z$/, "+00:00"), scale: 100, matchCount: used, players };
+  const duos = Object.keys(duo).sort((x, y) => { const [a1, b1] = x.split("\u0000"), [a2, b2] = y.split("\u0000"); return a1 < a2 ? -1 : a1 > a2 ? 1 : b1 < b2 ? -1 : b1 > b2 ? 1 : 0; })
+    .map(k => { const [a, b] = k.split("\u0000"), v = duo[k]; return { a, b, games: v.games, wins: v.wins, avg: r2(v.sum / v.games, 1) }; });
+  return { updatedAt: new Date().toISOString().replace(/\.\d+Z$/, "+00:00"), scale: 100, matchCount: used, players, duos };
 }
 
 // ---------- 깃헙 반영 ----------

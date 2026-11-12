@@ -97,6 +97,7 @@ def main():
 
     rec = defaultdict(lambda: {"sc": [], "wins": 0, "mvp": 0, "ace": 0, "champs": defaultdict(list), "best": None,
                                "k": 0, "d": 0, "a": 0, "dmg": 0, "tkn": 0, "ds": [], "kp": [], "ts": []})
+    duo = defaultdict(lambda: {"games": 0, "wins": 0, "sum": 0.0})
     used = 0
     for match in matches:
         if sum(t["kills"] for t in match["teams"]) <= REMAKE_TOTAL_KILLS:
@@ -105,6 +106,12 @@ def main():
         if not rows:
             continue
         used += 1
+        for team in match["teams"]:
+            mates = sorted({(alias[r["p"]["name"]], r["score"]) for r in rows if r["t"] is team and r["p"]["name"] in alias})
+            for i in range(len(mates)):
+                for j in range(i + 1, len(mates)):
+                    dd = duo[(mates[i][0], mates[j][0])]
+                    dd["games"] += 1; dd["wins"] += 1 if team["win"] else 0; dd["sum"] += (mates[i][1] + mates[j][1]) / 2
         for row in rows:
             p, t, s = row["p"], row["t"], row["score"]
             name = alias.get(p["name"])
@@ -151,8 +158,10 @@ def main():
     for i, p in enumerate(players):
         p["rank"] = i + 1
 
+    duos = [{"a": a, "b": b, "games": v["games"], "wins": v["wins"], "avg": rnd(v["sum"] / v["games"], 1)}
+            for (a, b), v in sorted(duo.items())]
     out = {"updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "scale": 100,
-           "matchCount": used, "players": players}
+           "matchCount": used, "players": players, "duos": duos}
     (DATA / "leaderboard.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"leaderboard: {used} matches, {len(players)} players")
 

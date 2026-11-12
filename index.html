@@ -94,6 +94,23 @@ td.num,th.num{text-align:right}
 .team li:last-child{border:0}
 .team li .tier{width:22px;height:22px;font-size:12px}
 .team li b{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:600}
+.ttl{display:inline-block;font-size:11px;font-weight:600;margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);vertical-align:2px}
+.titles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tbox{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.tbox .tn{font-size:16px;font-weight:700;margin:0}
+.tbox .tw{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
+.tbox .th{font-size:15px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.tbox .th span{font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums}
+.duos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.dlist h3{margin:0 0 8px;font-size:15px}
+.drow{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.drow:last-child{border:0}
+.drow .pair{font-weight:600}
+.drow .wr{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.drow .sub{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.wbar{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden;max-width:160px}
+.wbar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.wbar.lo i{background:var(--bad)}
 .scrim-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
 .scrim-foot button{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .score{font-weight:700}
@@ -197,10 +214,25 @@ td.num,th.num{text-align:right}
     <div id="detail"></div>
   </section>
 
+  <section class="card" id="titles">
+    <div class="sec-head"><h2>칭호</h2><span class="hint">10판 이상 한 사람 중 1등에게 줘요</span></div>
+    <div class="titles" id="titlelist"></div>
+  </section>
+
   <section class="card" id="scrim">
     <div class="sec-head"><h2>내전 황밸</h2><span class="hint">10명을 고르면 점수 합이 가장 비슷하게 나눠요</span></div>
     <div class="picks" id="picks"></div>
     <div id="scrimout"></div>
+  </section>
+
+  <section class="card" id="duo">
+    <div class="sec-head"><h2>듀오 궁합</h2><span class="hint">같은 팀으로 5판 이상 한 두 사람의 승률</span></div>
+    <div class="duos">
+      <div class="dlist"><h3>찰떡 듀오</h3><div id="duobest"></div></div>
+      <div class="dlist"><h3>상극 듀오</h3><div id="duoworst"></div></div>
+      <div class="dlist"><h3 style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">궁합표 <select class="sel" id="duowho"></select></h3><div id="duomine"></div></div>
+    </div>
+    <p class="note">평균 점수는 그 판들에서 두 사람 판 점수의 평균이에요. 승률이 같으면 평균 점수가 높은 쪽을 위에 둬요.</p>
   </section>
 
   <section class="card" id="graphs">
@@ -274,7 +306,7 @@ function renderBoard(){
   const tb=document.querySelector("#board tbody");tb.textContent="";
   [...PLAYERS].sort((a,b)=>{const x=val(a,sortK),y=val(b,sortK);return (x>y?1:x<y?-1:0)*sortDir;}).forEach(p=>{
     const tr=el("tr","row"+(p.name===ME?" me":""));tr.tabIndex=0;tr.id="p-"+p.rank;
-    const n=el("td","name",p.name);if(p.guest)n.append(el("span","guest","게스트"));if(p.fewGames)n.append(el("span","new","판수 적음"));
+    const n=el("td","name",p.name);if(p.guest)n.append(el("span","guest","게스트"));(TITLE_OF[p.name]||[]).forEach(t=>n.append(el("span","ttl",t)));if(p.fewGames)n.append(el("span","new","판수 적음"));
     const t=el("td");t.append(el("span","tier tier-"+p.tier,p.tier));
     const rg=el("td","range");const bar=el("div","rangebar");const iv=el("i");iv.style.left=pos(p.lo);iv.style.width=((Math.min(MAX,p.hi)-Math.max(MIN,p.lo))/(MAX-MIN)*100)+"%";
     const pt=el("em");pt.style.left=pos(p.score);bar.append(iv,pt);
@@ -331,9 +363,50 @@ function applyFilter(){
   PLAYERS=ALL.filter(p=>showGuests||!p.guest).map((p,i)=>({...p,rank:i+1}));
   if(openName&&!PLAYERS.some(p=>p.name===openName))openName=null;
   document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String((b.dataset.g==="1")===showGuests)));
-  renderStats(DATA);renderBoard();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
+  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
 }
 document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{showGuests=b.dataset.g==="1";try{localStorage.setItem("aram-guests",showGuests?"1":"0");}catch(e){}applyFilter();}));
+
+// ---- 칭호 ----
+const TITLES=[
+  {key:"딜머신",why:"팀 딜 비중 1위",val:p=>p.stats.ds,fmt:v=>v.toFixed(1)+"%",best:"max"},
+  {key:"샌드백",why:"팀 받은 피해 비중 1위",val:p=>p.stats.ts,fmt:v=>v.toFixed(1)+"%",best:"max"},
+  {key:"어시왕",why:"판당 어시스트 1위",val:p=>p.stats.a,fmt:v=>v.toFixed(1)+"개",best:"max"},
+  {key:"불사신",why:"판당 데스 가장 적음",val:p=>p.stats.d,fmt:v=>v.toFixed(1)+"데스",best:"min"},
+  {key:"헌혈왕",why:"판당 데스 가장 많음",val:p=>p.stats.d,fmt:v=>v.toFixed(1)+"데스",best:"max"},
+  {key:"MVP 장인",why:"MVP 받은 비율 1위",val:p=>p.mvp/p.games,fmt:v=>pct(v),best:"max"},
+  {key:"승리요정",why:"승률 1위",val:p=>p.wins/p.games,fmt:v=>pct(v),best:"max"},
+  {key:"킬 관여 장인",why:"킬 관여율 1위",val:p=>p.stats.kp,fmt:v=>v.toFixed(1)+"%",best:"max"},
+];
+let TITLE_OF={};
+function computeTitles(){
+  TITLE_OF={};const pool=PLAYERS.filter(p=>p.games>=10);const res=[];
+  TITLES.forEach(t=>{if(!pool.length)return;const w=pool.reduce((a,b)=>(t.best==="max"?t.val(b)>t.val(a):t.val(b)<t.val(a))?b:a);res.push([t,w]);(TITLE_OF[w.name]=TITLE_OF[w.name]||[]).push(t.key);});
+  return res;
+}
+function renderTitles(res){
+  const box=document.getElementById("titlelist");box.textContent="";
+  res.forEach(([t,w])=>{const b=el("div","tbox");const h=el("div","th");h.append(el("span",null,w.name),el("span",null,t.fmt(t.val(w))));b.append(el("p","tn",t.key),el("p","tw",t.why),h);box.append(b);});
+}
+
+// ---- 듀오 궁합 ----
+let duoWho=null;
+function duoList(){const ok=new Set(PLAYERS.map(p=>p.name));return(DATA.duos||[]).filter(d=>ok.has(d.a)&&ok.has(d.b)&&d.games>=5).map(d=>({...d,wr:d.wins/d.games}));}
+function duoRow(d,label){const r=el("div","drow");r.append(el("span","pair",label||d.a+" + "+d.b),el("span","wr",pct(d.wr)));
+  const sub=el("div","sub");const bar=el("div","wbar"+(d.wr<0.5?" lo":""));const i=el("i");i.style.width=Math.round(d.wr*100)+"%";bar.append(i);
+  sub.append(bar,document.createTextNode(d.games+"판 "+d.wins+"승 · 평균 "+d.avg.toFixed(1)+"점"));r.append(sub);return r;}
+function renderDuos(){
+  const L=duoList(),cmp=(a,b)=>b.wr-a.wr||b.avg-a.avg;
+  const best=document.getElementById("duobest"),worst=document.getElementById("duoworst");best.textContent="";worst.textContent="";
+  if(!L.length){best.append(el("p","hint","아직 5판 이상 같이 한 듀오가 없어요"));}
+  [...L].sort(cmp).slice(0,5).forEach(d=>best.append(duoRow(d)));
+  [...L].sort((a,b)=>cmp(b,a)).slice(0,5).forEach(d=>worst.append(duoRow(d)));
+  const sel=document.getElementById("duowho");sel.textContent="";PLAYERS.forEach(p=>{const o=el("option",null,p.name);o.value=p.name;sel.append(o);});
+  if(!PLAYERS.some(p=>p.name===duoWho))duoWho=PLAYERS.some(p=>p.name===ME)?ME:PLAYERS[0].name;sel.value=duoWho;
+  const mine=()=>{const box=document.getElementById("duomine");box.textContent="";const my=L.filter(d=>d.a===duoWho||d.b===duoWho).sort(cmp);
+    if(!my.length)box.append(el("p","hint","5판 이상 같이 한 사람이 없어요"));my.forEach(d=>box.append(duoRow(d,"+ "+(d.a===duoWho?d.b:d.a))));};
+  sel.onchange=()=>{duoWho=sel.value;mine();};mine();
+}
 
 // ---- 내전 황밸 ----
 let SCRIM={extra:[],default:[]},picked=null,altIdx=0;
