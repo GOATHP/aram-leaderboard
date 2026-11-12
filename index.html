@@ -111,6 +111,20 @@ td.num,th.num{text-align:right}
 .wbar{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden;max-width:160px}
 .wbar i{display:block;height:100%;background:var(--accent);border-radius:3px}
 .wbar.lo i{background:var(--bad)}
+.corp-name{font-family:var(--display);font-size:clamp(20px,5.4vw,26px);word-break:keep-all;margin:0 0 2px;text-align:center}
+.corp-sub{text-align:center;font-size:13px;color:var(--muted);margin:0 0 16px}
+.org{display:flex;flex-direction:column;align-items:center;gap:14px}
+.org-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;position:relative}
+.org-row+.org-row::before{content:"";position:absolute;top:-14px;left:50%;width:1px;height:14px;background:var(--line)}
+.emp{border:1px solid var(--line);border-radius:12px;padding:10px 12px;flex:0 1 165px;min-width:140px;text-align:center;background:var(--surface)}
+.emp.ceo{border-color:var(--accent);background:var(--accent-soft);min-width:200px}
+.emp.part{border-style:dashed}
+.emp .pos{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.emp .nm{font-size:16px;font-weight:700;margin:2px 0}
+.emp .dept{font-size:12.5px;color:var(--accent)}
+.emp .pay{font-size:12px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
+.emp .eval{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
+@media (max-width:480px){.emp{flex:1 1 130px;min-width:0;max-width:48%;padding:9px 8px}.emp.ceo{max-width:70%}.emp .nm{font-size:15px}}
 .scrim-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
 .scrim-foot button{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .score{font-weight:700}
@@ -217,6 +231,14 @@ td.num,th.num{text-align:right}
   <section class="card" id="titles">
     <div class="sec-head"><h2>칭호</h2><span class="hint">10판 이상 한 사람 중 1등에게 줘요</span></div>
     <div class="titles" id="titlelist"></div>
+  </section>
+
+  <section class="card" id="corp">
+    <div class="sec-head"><h2>증바람 주식회사</h2><span class="hint">점수 순위가 곧 직급이에요</span></div>
+    <p class="corp-name" id="corpname"></p>
+    <p class="corp-sub" id="corpsub"></p>
+    <div class="org" id="org"></div>
+    <p class="note">직급은 종합 순위 순서, 연봉은 점수 × 100만 원, 부서는 그 사람이 멤버 중 가장 앞서는 지표로 정해요. 순위가 바뀌면 인사 발령도 바로 나요.</p>
   </section>
 
   <section class="card" id="scrim">
@@ -363,7 +385,7 @@ function applyFilter(){
   PLAYERS=ALL.filter(p=>showGuests||!p.guest).map((p,i)=>({...p,rank:i+1}));
   if(openName&&!PLAYERS.some(p=>p.name===openName))openName=null;
   document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String((b.dataset.g==="1")===showGuests)));
-  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
+  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderCorp();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
 }
 document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{showGuests=b.dataset.g==="1";try{localStorage.setItem("aram-guests",showGuests?"1":"0");}catch(e){}applyFilter();}));
 
@@ -406,6 +428,29 @@ function renderDuos(){
   const mine=()=>{const box=document.getElementById("duomine");box.textContent="";const my=L.filter(d=>d.a===duoWho||d.b===duoWho).sort(cmp);
     if(!my.length)box.append(el("p","hint","5판 이상 같이 한 사람이 없어요"));my.forEach(d=>box.append(duoRow(d,"+ "+(d.a===duoWho?d.b:d.a))));};
   sel.onchange=()=>{duoWho=sel.value;mine();};mine();
+}
+
+// ---- 증바람 주식회사 ----
+const RANKS=["대표이사","전무","상무","부장","차장","과장","대리","주임","사원","인턴","수습"];
+const DEPTS=[
+  {k:"ds",name:"딜 영업본부"},{k:"ts",name:"고객 민원팀"},{k:"kp",name:"전략기획실"},{k:"a",name:"경영지원팀"},{k:"kda",name:"리스크관리팀"}];
+const EVALS={S:"회사를 먹여 살림",A:"믿고 맡기는 에이스",B:"묵묵히 제 몫 함",C:"성과 개선 면담 예정"};
+function deptOf(p){
+  let best=null,bz=-1e9;
+  DEPTS.forEach(d=>{const v=PLAYERS.map(x=>x.stats[d.k]);const mu=v.reduce((a,b)=>a+b,0)/v.length;const sd=Math.sqrt(v.reduce((a,b)=>a+(b-mu)**2,0)/v.length)||1;const z=(p.stats[d.k]-mu)/sd;if(z>bz){bz=z;best=d.name;}});
+  return best;
+}
+function renderCorp(){
+  const org=document.getElementById("org");org.textContent="";
+  if(!PLAYERS.length)return;
+  document.getElementById("corpname").textContent=PLAYERS[0].name+" 엔터테인먼트";
+  document.getElementById("corpsub").textContent="임직원 "+PLAYERS.length+"명"+(SCRIM.extra.length?" · 아르바이트 "+SCRIM.extra.length+"명":"")+" · 누적 "+DATA.matchCount+"판";
+  const card=(p,i)=>{const e=el("div","emp"+(i===0?" ceo":""));
+    e.append(el("div","pos",RANKS[Math.min(i,RANKS.length-1)]),el("div","nm",p.name),el("div","dept",i===0?"총괄":deptOf(p)),
+      el("div","pay","연봉 "+Math.round(p.score*100).toLocaleString("ko-KR")+"만 원"),el("div","eval",EVALS[p.tier]+(p.fewGames?" · 수습 평가 중":"")));return e;};
+  const rows=[[0],[1,2],[3,4,5],[...Array(PLAYERS.length).keys()].slice(6)];
+  rows.forEach(r=>{const idx=r.filter(i=>i<PLAYERS.length);if(!idx.length)return;const row=el("div","org-row");idx.forEach(i=>row.append(card(PLAYERS[i],i)));org.append(row);});
+  if(SCRIM.extra.length){const row=el("div","org-row");SCRIM.extra.forEach(x=>{const e=el("div","emp part");e.append(el("div","pos","아르바이트"),el("div","nm",x.name),el("div","dept","내전 인력 지원"),el("div","pay","시급 협의 중"),el("div","eval","칼바람 실적 없음"));row.append(e);});org.append(row);}
 }
 
 // ---- 내전 황밸 ----
@@ -503,7 +548,7 @@ let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>
 
 fetch("data/leaderboard.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
   DATA=d;ALL=d.players;applyFilter();
-  fetch("data/scrim.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(x=>{if(x)SCRIM=x;}).catch(()=>{}).finally(renderScrim);
+  fetch("data/scrim.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(x=>{if(x)SCRIM=x;}).catch(()=>{}).finally(()=>{renderScrim();renderCorp();});
 }).catch(e=>{console.error(e);const u=document.getElementById("updated");u.textContent="순위 데이터를 불러오지 못했어요. data/leaderboard.json이 저장소에 있는지 확인해 주세요.";u.classList.add("err");});
 </script>
 <script src="admin.js"></script>
