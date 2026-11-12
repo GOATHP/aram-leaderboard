@@ -52,6 +52,7 @@ function scoreMatch(m) {
 }
 const r2 = (x, d) => Math.round(x * 10 ** d) / 10 ** d;
 function leaderboard(matches, members, ko) {
+  const guests = new Set(members.filter(m => m.guest).map(m => m.name));
   const alias = {}; members.forEach(m => [...(m.aliases || []), m.name, (m.riotId || "").split("#")[0]].forEach(a => { if (a) alias[a] = m.name; }));
   const rec = {}; let used = 0;
   for (const m of matches) {
@@ -70,7 +71,7 @@ function leaderboard(matches, members, ko) {
     const mu = mean(r.sc), n = r.sc.length;
     const se = n > 1 ? Math.sqrt(r.sc.reduce((s, x) => s + (x - mu) ** 2, 0) / (n - 1)) / Math.sqrt(n) : 2;
     const tier = (TIER_CUTS.find(([c]) => mu >= c) || [0, "C"])[1];
-    return { name, score: r2(mu, 2), lo: r2(Math.max(0, mu - 1.96 * se), 1), hi: r2(Math.min(10, mu + 1.96 * se), 1), games: n, wins: r.wins, mvp: r.mvp, ace: r.ace, tier, fewGames: n < FEW, best: r.best,
+    return { name, score: r2(mu, 2), lo: r2(Math.max(0, mu - 1.96 * se), 1), hi: r2(Math.min(10, mu + 1.96 * se), 1), games: n, wins: r.wins, mvp: r.mvp, ace: r.ace, tier, fewGames: n < FEW, best: r.best, guest: guests.has(name), history: r.sc.map(x => r2(x, 2)),
       champions: Object.entries(r.ch).map(([c, v]) => [c, v.length, r2(mean(v), 2)]).sort((a, b) => b[2] - a[2]) };
   }).sort((a, b) => b.score - a.score);
   players.forEach((p, i) => p.rank = i + 1);

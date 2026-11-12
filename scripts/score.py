@@ -68,6 +68,7 @@ def main():
     matches = json.loads((DATA / "matches.json").read_text(encoding="utf-8"))
     members = json.loads((DATA / "members.json").read_text(encoding="utf-8"))["members"]
     alias = {}
+    guests = {m["name"] for m in members if m.get("guest")}
     for m in members:
         for a in m.get("aliases", []) + [m["name"], m.get("riotId", "").split("#")[0]]:
             if a:
@@ -108,6 +109,7 @@ def main():
             "games": len(sc), "wins": r["wins"], "mvp": r["mvp"], "ace": r["ace"],
             "tier": tier_of(mean), "fewGames": len(sc) < FEW_GAMES,
             "best": r["best"], "champions": champs,
+            "guest": name in guests, "history": [round(x, 2) for x in sc],
         })
     players.sort(key=lambda p: -p["score"])
     for i, p in enumerate(players):

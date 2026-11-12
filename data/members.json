@@ -1,16 +1,16 @@
 {
-  "_설명": "riotId에 각 멤버의 Riot ID(닉네임#태그)를 채워주세요. aliases는 전적 사이트에 표시되는 다른 이름입니다.",
+  "_설명": "riotId에 각 멤버의 Riot ID(닉네임#태그)를 채워주세요. aliases는 전적 사이트에 표시되는 다른 이름입니다. guest: true면 원래 멤버가 아닌 게스트(사이트에서 포함/제외 필터 가능).",
   "members": [
-    {"name": "Rstudio", "riotId": "Rstudio#KR1", "aliases": ["Rstudio"]},
-    {"name": "분위기 메이커", "riotId": "", "aliases": ["분위기 메이커"]},
-    {"name": "막창의 신 박진원", "riotId": "", "aliases": ["막창의 신 박진원"]},
-    {"name": "절알려하지마세요", "riotId": "", "aliases": ["절알려하지마세요"]},
-    {"name": "정반푸", "riotId": "", "aliases": ["정반푸"]},
-    {"name": "리얼비버", "riotId": "", "aliases": ["리얼비버"]},
-    {"name": "붕새", "riotId": "", "aliases": ["붕새", "붕 새"]},
-    {"name": "대방역몽키스패너", "riotId": "", "aliases": ["대방역몽키스패너"]},
-    {"name": "도식끄", "riotId": "", "aliases": ["도식끄"]},
-    {"name": "겨울장마", "riotId": "", "aliases": ["겨울장마"]},
-    {"name": "그렇게해라", "riotId": "", "aliases": ["그렇게해라"]}
+    {"name": "Rstudio", "riotId": "Rstudio#KR1", "aliases": ["Rstudio"], "guest": false},
+    {"name": "분위기 메이커", "riotId": "", "aliases": ["분위기 메이커"], "guest": false},
+    {"name": "막창의 신 박진원", "riotId": "", "aliases": ["막창의 신 박진원"], "guest": false},
+    {"name": "절알려하지마세요", "riotId": "", "aliases": ["절알려하지마세요"], "guest": false},
+    {"name": "정반푸", "riotId": "", "aliases": ["정반푸"], "guest": false},
+    {"name": "리얼비버", "riotId": "", "aliases": ["리얼비버"], "guest": false},
+    {"name": "붕새", "riotId": "", "aliases": ["붕새", "붕 새"], "guest": false},
+    {"name": "대방역몽키스패너", "riotId": "", "aliases": ["대방역몽키스패너"], "guest": false},
+    {"name": "도식끄", "riotId": "", "aliases": ["도식끄"], "guest": true},
+    {"name": "겨울장마", "riotId": "", "aliases": ["겨울장마"], "guest": false},
+    {"name": "그렇게해라", "riotId": "", "aliases": ["그렇게해라"], "guest": true}
   ]
 }
