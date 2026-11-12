@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>칼바람 리더보드</title>
-<meta name="description" content="우리 멤버 칼바람 나락 순위표. op.gg 방식에 가깝게 판마다 점수를 매겼어요.">
+<meta name="description" content="우리 멤버 칼바람 나락 순위표. 팀 딜 기여도·킬 관여율·KDA·탱킹 비중 등으로 판마다 100점 만점 점수를 매겼어요.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="칼바람 리더보드">
-<meta property="og:description" content="우리 멤버 칼바람 나락 순위표. op.gg 방식에 가깝게 판마다 점수를 매겼어요.">
+<meta property="og:description" content="우리 멤버 칼바람 나락 순위표. 팀 딜 기여도·킬 관여율·KDA·탱킹 비중 등으로 판마다 100점 만점 점수를 매겼어요.">
 <meta property="og:url" content="https://goathp.github.io/aram-leaderboard/">
 <meta property="og:image" content="https://goathp.github.io/aram-leaderboard/og.png">
 <meta property="og:image:width" content="1200">
@@ -146,7 +146,7 @@ td.num,th.num{text-align:right}
 <main class="wrap">
   <header>
     <h1>칼바람 리더보드</h1>
-    <p class="lead">우리 멤버들의 칼바람 나락 기록을 op.gg 방식에 가깝게 점수화한 순위예요. 매일 오전 9시에 전날 판이 반영돼요. 행을 누르면 그 사람의 기록이 보여요.</p>
+    <p class="lead">우리 멤버들의 칼바람 나락 기록을 100점 만점으로 점수화한 순위예요. 행을 누르면 그 사람의 점수 구성과 기본 통계가 보여요.</p>
     <div class="stats" id="stats"></div>
     <div class="filters">
       <span class="hint">게스트 (도식끄, 그렇게해라)</span>
@@ -186,19 +186,19 @@ td.num,th.num{text-align:right}
     <div class="charts">
       <div>
         <p class="chart-title">평균 점수</p>
-        <p class="chart-sub">점선은 티어 경계 (B 5.0 · A 5.5 · S 6.2)</p>
+        <p class="chart-sub">100점 만점 · 점선은 티어 경계 (B 40 · A 47 · S 55)</p>
         <div class="chart" id="barchart"></div>
       </div>
       <div>
         <div class="sec-head" style="margin-bottom:2px"><p class="chart-title">판이 쌓이며 바뀐 평균 점수</p><label class="hint" for="trendwho">강조 <select class="sel" id="trendwho"></select></label></div>
-        <p class="chart-sub">가로축은 그 사람의 몇 번째 판인지, 세로축은 그때까지의 평균이에요. 3판째부터 그려요.</p>
+        <p class="chart-sub">가로축은 그 사람의 몇 번째 판인지, 세로축은 그때까지의 판 점수(90점 만점) 평균이에요. 3판째부터 그려요.</p>
         <div class="chart" id="trend"></div>
       </div>
     </div>
   </section>
 
   <section class="card" id="tiers">
-    <div class="sec-head"><h2>티어</h2><span class="hint">S 6.2점 이상 · A 5.5 · B 5.0 · C 그 아래</span></div>
+    <div class="sec-head"><h2>티어</h2><span class="hint">S 55점 이상 · A 47 · B 40 · C 그 아래</span></div>
     <div class="tiers" id="tierlist"></div>
   </section>
 
@@ -213,20 +213,21 @@ td.num,th.num{text-align:right}
         <tbody></tbody>
       </table>
     </div>
-    <p class="note">평가는 2판 이상 한 챔피언만 매겨요. 6점 이상 무조건 잡기, 5점 이상 좋음, 4점 이상 보통, 3점 이상 안 맞음, 그 아래는 리롤이에요.</p>
+    <p class="note">챔피언 점수는 그 챔피언으로 한 판 점수(90점 만점, 안정성 제외)의 평균이에요. 평가는 2판 이상 한 챔피언만 매겨요. 55점 이상 무조건 잡기, 45점 이상 좋음, 35점 이상 보통, 25점 이상 안 맞음, 그 아래는 리롤이에요.</p>
   </section>
 
   <section class="card" id="method">
-    <div class="sec-head"><h2>계산 방식</h2><span class="hint">op.gg 공식이 비공개라 근사치예요</span></div>
+    <div class="sec-head"><h2>계산 방식</h2><span class="hint">100점 만점</span></div>
     <div class="method">
-      <div class="mbox"><b>30%</b><span>딜량과 받은 피해 중 10명 안에서 더 높은 순위</span></div>
-      <div class="mbox"><b>25%</b><span>킬 관여율</span></div>
-      <div class="mbox"><b>20%</b><span>KDA</span></div>
-      <div class="mbox"><b>15%</b><span>승리</span></div>
-      <div class="mbox"><b>10%</b><span>골드</span></div>
-      <div class="mbox"><b>93%</b><span>실제 op.gg MVP·ACE 배지와 일치 (29판 중 27판)</span></div>
+      <div class="mbox"><b>25점</b><span>팀 딜 기여도 (내 딜 ÷ 우리 팀 딜)</span></div>
+      <div class="mbox"><b>20점</b><span>킬 관여율 ((킬+어시) ÷ 우리 팀 킬)</span></div>
+      <div class="mbox"><b>15점</b><span>KDA·생존력 ((킬+어시) ÷ 데스)</span></div>
+      <div class="mbox"><b>20점</b><span>역할 수행도 (내가 받은 피해 ÷ 우리 팀 받은 피해)</span></div>
+      <div class="mbox"><b>10점</b><span>경기별 안정성 (판 점수 편차가 작을수록)</span></div>
+      <div class="mbox"><b>10점</b><span>결정적 기여 (MVP 10점, ACE 5점)</span></div>
     </div>
-    <p class="note">판마다 양 팀 10명을 비교해 0~10점을 주고, 이긴 팀 최고점을 MVP, 진 팀 최고점을 ACE로 뽑아요. 다시하기 판은 빼요. 판수가 20판보다 적은 멤버는 순위가 쉽게 바뀔 수 있어요.</p>
+    <p class="note">앞의 네 지표는 판마다 비율을 구한 뒤 그 판 10명 안에서 몇 등인지로 점수를 줘요. 1등이면 배점 전부, 꼴찌면 0점이에요. 여기에 그 판 MVP면 10점, ACE면 5점을 더해 판 점수(90점 만점)를 만들고, 판 점수 평균에 안정성 점수를 더한 게 최종 점수예요. 안정성은 판 점수의 표준편차가 10 이하면 10점, 25 이상이면 0점이고 그 사이는 비례해서 줘요. MVP는 이긴 팀, ACE는 진 팀에서 네 지표 점수가 가장 높은 사람이에요. 다시하기 판은 빼요.</p>
+    <p class="note">CC·회복·보호막·게임 시간은 전적 데이터에 없어서 빠져 있어요. 그래서 분당 딜량(DPM)이나 서포터 보정은 아직 반영하지 못했어요. 승패 자체는 점수에 들어가지 않아요.</p>
   </section>
 </main>
 
@@ -236,7 +237,7 @@ const pct=n=>Math.round(n*100)+"%";
 const ME="Rstudio";
 let ALL=[],DATA=null,showGuests=false,trendWho=null,PLAYERS=[],sortK="rank",sortDir=1,openName=null;
 const tierOrder={S:0,A:1,B:2,C:3};
-const MIN=2,MAX=9;const pos=v=>((Math.min(MAX,Math.max(MIN,v))-MIN)/(MAX-MIN)*100)+"%";
+const MIN=15,MAX=80;const pos=v=>((Math.min(MAX,Math.max(MIN,v))-MIN)/(MAX-MIN)*100)+"%";
 function val(p,k){if(k==="wr")return p.wins/p.games;if(k==="tier")return tierOrder[p.tier];return p[k];}
 
 function renderStats(d){
@@ -256,7 +257,7 @@ function renderBoard(){
     const rg=el("td","range");const bar=el("div","rangebar");const iv=el("i");iv.style.left=pos(p.lo);iv.style.width=((Math.min(MAX,p.hi)-Math.max(MIN,p.lo))/(MAX-MIN)*100)+"%";
     const pt=el("em");pt.style.left=pos(p.score);bar.append(iv,pt);
     const lab=el("div","axis");lab.append(el("span",null,p.lo.toFixed(1)),el("span",null,p.hi.toFixed(1)));rg.append(bar,lab);
-    tr.append(el("td","rank",String(p.rank)),n,t,el("td","num score",p.score.toFixed(2)),rg,el("td","num",String(p.games)),el("td","num",pct(p.wins/p.games)),el("td","num",String(p.mvp)),el("td","num",String(p.ace)));
+    tr.append(el("td","rank",String(p.rank)),n,t,el("td","num score",p.score.toFixed(1)),rg,el("td","num",String(p.games)),el("td","num",pct(p.wins/p.games)),el("td","num",String(p.mvp)),el("td","num",String(p.ace)));
     const open=()=>{openName=openName===p.name?null:p.name;renderDetail();};
     tr.addEventListener("click",open);tr.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open();}});
     tb.append(tr);
@@ -272,12 +273,16 @@ function renderDetail(){
   const d=el("div","detail");
   const a=el("div","dbox");a.append(el("h3",null,p.name+" · 베스트 챔피언 (2판 이상)"));
   const c=el("div","champs");const top=p.champions.filter(x=>x[1]>=2).slice(0,3);
-  if(top.length)top.forEach(([n,g,v])=>{const ch=el("span","chip");ch.append(el("span",null,n),el("b",null,v.toFixed(2)));c.append(ch);});
+  if(top.length)top.forEach(([n,g,v])=>{const ch=el("span","chip");ch.append(el("span",null,n),el("b",null,v.toFixed(1)));c.append(ch);});
   else c.append(el("span","hint","아직 2판 이상 한 챔피언이 없어요"));
   a.append(c);
   const b=el("div","dbox");b.append(el("h3",null,"최고 판"));const ch=el("span","chip");ch.append(el("span",null,p.best[0]),el("b",null,p.best[1].toFixed(1)+"점"));b.append(ch);
   const e=el("div","dbox");e.append(el("h3",null,"기록"));e.append(el("div",null,p.games+"판 "+p.wins+"승 "+(p.games-p.wins)+"패 · MVP "+p.mvp+" · ACE "+p.ace));
-  d.append(a,b,e);box.append(d);
+  const f=el("div","dbox");f.append(el("h3",null,"점수 구성"));
+  f.append(el("div",null,"판 점수 평균 "+p.parts.game.toFixed(1)+" / 90"),el("div",null,"경기별 안정성 "+p.parts.stability.toFixed(1)+" / 10 (편차 "+p.parts.sd.toFixed(1)+")"),el("div",null,"합계 "+p.score.toFixed(1)+" / 100"));
+  const g=el("div","dbox");g.append(el("h3",null,"기본 통계 (판당)"));const S=p.stats;
+  g.append(el("div",null,"KDA "+S.kda.toFixed(2)+" ("+S.k+" / "+S.d+" / "+S.a+")"),el("div",null,"딜량 "+S.dmg.toLocaleString("ko-KR")+" · 받은 피해 "+S.taken.toLocaleString("ko-KR")),el("div",null,"킬 관여 "+S.kp+"% · 팀 딜 "+S.ds+"% · 팀 피해 흡수 "+S.ts+"%"));
+  d.append(f,g,a,b,e);box.append(d);
 }
 function renderTiers(){
   const desc={S:"어떤 기준으로 봐도 최상위예요.",A:"상위권. 점수 차이가 작아 사실상 동급이에요.",B:"상위권과 하위권 사이예요.",C:"점수 범위가 많이 겹치는 하위권이에요."};
@@ -285,12 +290,12 @@ function renderTiers(){
   ["S","A","B","C"].forEach(t=>{const who=PLAYERS.filter(p=>p.tier===t).map(p=>p.name);if(!who.length)return;
     const b=el("div","tierbox");const h=el("div");h.append(el("span","tier tier-"+t,t));b.append(h,el("p","who",who.join(", ")),el("p",null,desc[t]));tl.append(b);});
 }
-function verdict(g,s){if(g<2)return["1판",""];if(s>=6)return["무조건 잡기"," v-good"];if(s>=5)return["좋음"," v-good"];if(s>=4)return["보통",""];if(s>=3)return["안 맞음"," v-bad"];return["리롤"," v-bad"];}
+function verdict(g,s){if(g<2)return["1판",""];if(s>=55)return["무조건 잡기"," v-good"];if(s>=45)return["좋음"," v-good"];if(s>=35)return["보통",""];if(s>=25)return["안 맞음"," v-bad"];return["리롤"," v-bad"];}
 function renderChamps(){
   const who=document.getElementById("who").value;const p=PLAYERS.find(x=>x.name===who);
   const tb=document.querySelector("#ctable tbody");tb.textContent="";if(!p)return;
   const list=[...p.champions].sort((a,b)=>(b[1]>=2)-(a[1]>=2)||b[2]-a[2]);
-  list.forEach(([n,g,s])=>{const tr=el("tr");const sc=el("td");const cb=el("div","cbar"+(s<4?" lo":""));const sp=el("span");sp.style.width=Math.max(4,s/9*120)+"px";cb.append(sp,el("b",null,s.toFixed(2)));sc.append(cb);
+  list.forEach(([n,g,s])=>{const tr=el("tr");const sc=el("td");const cb=el("div","cbar"+(s<35?" lo":""));const sp=el("span");sp.style.width=Math.max(4,s/90*120)+"px";cb.append(sp,el("b",null,s.toFixed(1)));sc.append(cb);
     const [v,cls]=verdict(g,s);const vt=el("td");vt.append(el("span","verdict"+cls,v));
     tr.append(el("td","name",n),el("td","num",String(g)),sc,vt);tb.append(tr);});
 }
@@ -317,18 +322,18 @@ function showTip(box,t,html,x,y){t.textContent="";html.forEach((line,i)=>{if(i)t
 function renderBars(){
   const box=document.getElementById("barchart");box.textContent="";
   const W=Math.max(320,box.clientWidth||700),sm=W<480,labelW=sm?104:150,rowH=30,top=22,H=top+PLAYERS.length*rowH+6;
-  const x0=labelW,x1=W-46,X=v=>x0+(x1-x0)*v/10;
+  const x0=labelW,x1=W-46,X=v=>x0+(x1-x0)*v/100;
   const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"멤버별 평균 점수 막대그래프"});
-  [0,2,4,6,8,10].forEach(v=>{svg.append(sv("line",{class:"grid",x1:X(v),x2:X(v),y1:top-4,y2:H}),sv("text",{x:X(v),y:12,"text-anchor":"middle"},String(v)));});
-  [[5.0,"B"],[5.5,"A"],[6.2,"S"]].forEach(([v])=>svg.append(sv("line",{class:"cut",x1:X(v),x2:X(v),y1:top-4,y2:H})));
+  [0,20,40,60,80,100].forEach(v=>{svg.append(sv("line",{class:"grid",x1:X(v),x2:X(v),y1:top-4,y2:H}),sv("text",{x:X(v),y:12,"text-anchor":"middle"},String(v)));});
+  [[40,"B"],[47,"A"],[55,"S"]].forEach(([v])=>svg.append(sv("line",{class:"cut",x1:X(v),x2:X(v),y1:top-4,y2:H})));
   const tip=tipFor(box);
   PLAYERS.forEach((p,i)=>{
     const y=top+i*rowH,bh=16,by=y+(rowH-bh)/2,w=Math.max(4,X(p.score)-x0);
     svg.append(sv("text",{class:"lbl",x:x0-10,y:by+bh/2+4,"text-anchor":"end"},p.name.length>(sm?7:9)?p.name.slice(0,sm?6:8)+"…":p.name));
     const hit=sv("rect",{class:"hit",x:0,y:y,width:W,height:rowH});
     const bar=sv("path",{class:"bar"+(p.fewGames?" dim":""),d:`M${x0},${by}h${w-4}a4,4 0 0 1 4,4v${bh-8}a4,4 0 0 1 -4,4h${-(w-4)}z`});
-    svg.append(hit,bar,sv("text",{class:"val",x:x0+w+6,y:by+bh/2+4},p.score.toFixed(2)));
-    hit.addEventListener("mousemove",e=>{const r=box.getBoundingClientRect();bar.classList.add("hl");showTip(box,tip,[[p.name+" ",p.tier+"티어"],"평균 "+p.score.toFixed(2)+"점 (범위 "+p.lo.toFixed(1)+"~"+p.hi.toFixed(1)+")",p.games+"판 · 승률 "+pct(p.wins/p.games)+(p.fewGames?" · 판수 적음":"")],e.clientX-r.left,e.clientY-r.top);});
+    svg.append(hit,bar,sv("text",{class:"val",x:x0+w+6,y:by+bh/2+4},p.score.toFixed(1)));
+    hit.addEventListener("mousemove",e=>{const r=box.getBoundingClientRect();bar.classList.add("hl");showTip(box,tip,[[p.name+" ",p.tier+"티어"],p.score.toFixed(1)+"점 = 판 점수 "+p.parts.game.toFixed(1)+" + 안정성 "+p.parts.stability.toFixed(1),"범위 "+p.lo.toFixed(1)+"~"+p.hi.toFixed(1),p.games+"판 · 승률 "+pct(p.wins/p.games)+(p.fewGames?" · 판수 적음":"")],e.clientX-r.left,e.clientY-r.top);});
     hit.addEventListener("mouseleave",()=>{bar.classList.remove("hl");tip.style.opacity=0;});
   });
   box.append(svg);
@@ -344,11 +349,11 @@ function renderTrend(){
   const box=document.getElementById("trend");box.textContent="";
   const START=3,series=PLAYERS.map(p=>{let s=0;const pts=p.history.map((v,i)=>(s+=v)/(i+1));return{p,pts};}).filter(o=>o.pts.length>=START);
   const maxN=Math.max(...series.map(o=>o.pts.length));
-  const vals=series.flatMap(o=>o.pts.slice(START-1));const lo=Math.floor(Math.min(...vals)),hi=Math.ceil(Math.max(...vals));
+  const vals=series.flatMap(o=>o.pts.slice(START-1));const lo=Math.floor(Math.min(...vals)/10)*10,hi=Math.ceil(Math.max(...vals)/10)*10;
   const W=Math.max(320,box.clientWidth||700),H=Math.round(Math.max(230,Math.min(340,W*0.5))),L=34,R=W-90,T=10,B=H-26;
   const X=n=>L+(R-L)*(n-START)/Math.max(1,maxN-START),Y=v=>B-(B-T)*(v-lo)/(hi-lo||1);
   const svg=sv("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"판수에 따른 누적 평균 점수 선그래프"});
-  for(let v=lo;v<=hi;v++)svg.append(sv("line",{class:"grid",x1:L,x2:R,y1:Y(v),y2:Y(v)}),sv("text",{x:L-8,y:Y(v)+4,"text-anchor":"end"},String(v)));
+  for(let v=lo;v<=hi;v+=10)svg.append(sv("line",{class:"grid",x1:L,x2:R,y1:Y(v),y2:Y(v)}),sv("text",{x:L-8,y:Y(v)+4,"text-anchor":"end"},String(v)));
   const step=W<480?20:maxN>40?10:5;for(let n=step;n<=maxN;n+=step)svg.append(sv("text",{x:X(n),y:H-6,"text-anchor":"middle"},n+"판"));
   const path=o=>o.pts.slice(START-1).map((v,i)=>(i?"L":"M")+X(i+START).toFixed(1)+","+Y(v).toFixed(1)).join("");
   series.filter(o=>o.p.name!==trendWho).forEach(o=>svg.append(sv("path",{class:"ln",d:path(o)})));
@@ -357,14 +362,14 @@ function renderTrend(){
   if(me){
     svg.append(sv("path",{class:"ln on",d:path(me)}));
     const n=me.pts.length,v=me.pts[n-1];
-    svg.append(sv("circle",{class:"dot",cx:X(n),cy:Y(v),r:4.5}),sv("text",{class:"lbl",x:X(n)+8,y:Y(v)+4},v.toFixed(2)));
+    svg.append(sv("circle",{class:"dot",cx:X(n),cy:Y(v),r:4.5}),sv("text",{class:"lbl",x:X(n)+8,y:Y(v)+4},v.toFixed(1)));
     const xh=sv("line",{class:"xh",y1:T,y2:B,x1:0,x2:0,visibility:"hidden"}),hd=sv("circle",{class:"dot",r:4.5,cx:0,cy:0,visibility:"hidden"});
     const hit=sv("rect",{x:L,y:T,width:R-L,height:B-T,fill:"transparent"});
     svg.append(xh,hd,hit);
     hit.addEventListener("mousemove",e=>{const r=svg.getBoundingClientRect(),sx=(e.clientX-r.left)*W/r.width;
       let k=Math.round(START+(sx-L)/(R-L)*(maxN-START));k=Math.max(START,Math.min(n,k));const val=me.pts[k-1];
       xh.setAttribute("visibility","visible");hd.setAttribute("visibility","visible");xh.setAttribute("x1",X(k));xh.setAttribute("x2",X(k));hd.setAttribute("cx",X(k));hd.setAttribute("cy",Y(val));
-      const b=box.getBoundingClientRect();showTip(box,tip,[[me.p.name+" ",k+"판째"],"그때까지 평균 "+val.toFixed(2)+"점","그 판 점수 "+me.p.history[k-1].toFixed(2)+"점"],X(k)*r.width/W+(r.left-b.left),Y(val)*r.height/H+(r.top-b.top));});
+      const b=box.getBoundingClientRect();showTip(box,tip,[[me.p.name+" ",k+"판째"],"그때까지 평균 "+val.toFixed(1)+"점","그 판 점수 "+me.p.history[k-1].toFixed(1)+"점"],X(k)*r.width/W+(r.left-b.left),Y(val)*r.height/H+(r.top-b.top));});
     hit.addEventListener("mouseleave",()=>{tip.style.opacity=0;xh.setAttribute("visibility","hidden");hd.setAttribute("visibility","hidden");});
   }
   box.append(svg);

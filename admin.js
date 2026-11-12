@@ -3,7 +3,7 @@
 (() => {
 const PASS = "1234";
 const REPO = "GOATHP/aram-leaderboard", BRANCH = "main";
-const TIER_CUTS = [[6.2, "S"], [5.5, "A"], [5.0, "B"]], FEW = 20, REMAKE = 10;
+const FEW = 20, REMAKE = 10;
 const $ = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 
 // ---------- 파서 (scripts/ingest.py와 같은 규칙) ----------
@@ -39,43 +39,50 @@ function parse(text) {
 }
 const keyOf = teams => JSON.stringify(teams.flatMap(t => t.players.map(p => [p.champion, p.kills, p.deaths, p.assists, p.damage])).sort());
 
-// ---------- 점수 (scripts/score.py와 같은 계산) ----------
+// ---------- 점수 (scripts/score.py와 같은 계산, 100점 배점) ----------
+const W_DS = 25, W_KP = 20, W_KDA = 15, W_TS = 20, MVP_PTS = 10, ACE_PTS = 5;
 function pctRank(vals, v) { const below = vals.filter(x => x < v).length, eq = vals.filter(x => x === v).length - 1; return (below + eq / 2) / (vals.length - 1); }
+const sum = a => a.reduce((x, y) => x + y, 0), mean = a => sum(a) / a.length;
 function scoreMatch(m) {
   const P = m.teams.flatMap(t => t.players.map(p => [p, t])); if (P.length !== 10) return null;
-  const dmg = P.map(([p]) => p.damage), tkn = P.map(([p]) => p.taken), gold = P.map(([p]) => p.gold);
+  const td = new Map(m.teams.map(t => [t, Math.max(1, sum(t.players.map(p => p.damage)))])), tt = new Map(m.teams.map(t => [t, Math.max(1, sum(t.players.map(p => p.taken)))]));
+  const ds = P.map(([p, t]) => p.damage / td.get(t)), ts = P.map(([p, t]) => p.taken / tt.get(t));
   const kp = P.map(([p, t]) => (p.kills + p.assists) / Math.max(t.kills, 1)), kda = P.map(([p]) => (p.kills + p.assists) / Math.max(p.deaths, 1));
-  const sc = P.map(([, t], i) => 10 * (0.30 * Math.max(pctRank(dmg, dmg[i]), pctRank(tkn, tkn[i])) + 0.25 * pctRank(kp, kp[i]) + 0.20 * pctRank(kda, kda[i]) + 0.10 * pctRank(gold, gold[i]) + 0.15 * (t.win ? 1 : 0)));
-  const best = f => { let b = -1; P.forEach(([, t], i) => { if (f(t) && (b < 0 || sc[i] > sc[b])) b = i; }); return b; };
+  const base = P.map((_, i) => W_DS * pctRank(ds, ds[i]) + W_KP * pctRank(kp, kp[i]) + W_KDA * pctRank(kda, kda[i]) + W_TS * pctRank(ts, ts[i]));
+  const best = f => { let b = -1; P.forEach(([, t], i) => { if (f(t) && (b < 0 || base[i] > base[b])) b = i; }); return b; };
   const mvp = best(t => t.win), ace = best(t => !t.win);
-  return P.map(([p, t], i) => [p, t, sc[i], i === mvp, i === ace]);
+  return P.map(([p, t], i) => ({ p, t, score: base[i] + (i === mvp ? MVP_PTS : i === ace ? ACE_PTS : 0), mvp: i === mvp, ace: i === ace, ds: ds[i], kp: kp[i], ts: ts[i] }));
 }
 const r2 = (x, d) => Math.round(x * 10 ** d) / 10 ** d;
+const TIERS100 = [[55, "S"], [47, "A"], [40, "B"]];
 function leaderboard(matches, members, ko) {
   const guests = new Set(members.filter(m => m.guest).map(m => m.name));
   const alias = {}; members.forEach(m => [...(m.aliases || []), m.name, (m.riotId || "").split("#")[0]].forEach(a => { if (a) alias[a] = m.name; }));
   const rec = {}; let used = 0;
   for (const m of matches) {
-    if (m.teams.reduce((s, t) => s + t.kills, 0) <= REMAKE) continue;
+    if (sum(m.teams.map(t => t.kills)) <= REMAKE) continue;
     const rows = scoreMatch(m); if (!rows) continue; used++;
-    for (const [p, t, s, mv, ac] of rows) {
-      const n = alias[p.name]; if (!n) continue;
-      const r = rec[n] || (rec[n] = { sc: [], wins: 0, mvp: 0, ace: 0, ch: {}, best: null });
+    for (const row of rows) {
+      const { p, t, score: s } = row, n = alias[p.name]; if (!n) continue;
+      const r = rec[n] || (rec[n] = { sc: [], wins: 0, mvp: 0, ace: 0, ch: {}, best: null, k: 0, d: 0, a: 0, dmg: 0, tkn: 0, ds: [], kp: [], ts: [] });
       const c = ko[p.champion] || p.champion;
-      r.sc.push(s); r.wins += t.win ? 1 : 0; r.mvp += mv; r.ace += ac; (r.ch[c] = r.ch[c] || []).push(s);
+      r.sc.push(s); r.wins += t.win ? 1 : 0; r.mvp += row.mvp; r.ace += row.ace; (r.ch[c] = r.ch[c] || []).push(s);
       if (!r.best || s > r.best[1]) r.best = [c, r2(s, 1)];
+      r.k += p.kills; r.d += p.deaths; r.a += p.assists; r.dmg += p.damage; r.tkn += p.taken; r.ds.push(row.ds); r.kp.push(row.kp); r.ts.push(row.ts);
     }
   }
-  const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
   const players = Object.entries(rec).map(([name, r]) => {
-    const mu = mean(r.sc), n = r.sc.length;
-    const se = n > 1 ? Math.sqrt(r.sc.reduce((s, x) => s + (x - mu) ** 2, 0) / (n - 1)) / Math.sqrt(n) : 2;
-    const tier = (TIER_CUTS.find(([c]) => mu >= c) || [0, "C"])[1];
-    return { name, score: r2(mu, 2), lo: r2(Math.max(0, mu - 1.96 * se), 1), hi: r2(Math.min(10, mu + 1.96 * se), 1), games: n, wins: r.wins, mvp: r.mvp, ace: r.ace, tier, fewGames: n < FEW, best: r.best, guest: guests.has(name), history: r.sc.map(x => r2(x, 2)),
-      champions: Object.entries(r.ch).map(([c, v]) => [c, v.length, r2(mean(v), 2)]).sort((a, b) => b[2] - a[2]) };
+    const n = r.sc.length, g = mean(r.sc), sd = n > 1 ? Math.sqrt(r.sc.reduce((s, x) => s + (x - g) ** 2, 0) / (n - 1)) : 0;
+    const stab = n >= 3 ? Math.max(0, Math.min(10, 10 * (25 - sd) / 15)) : 5, total = g + stab, se = n > 1 ? sd / Math.sqrt(n) : 20;
+    const tier = (TIERS100.find(([c]) => total >= c) || [0, "C"])[1];
+    return { name, score: r2(total, 1), lo: r2(Math.max(0, total - 1.96 * se), 1), hi: r2(Math.min(100, total + 1.96 * se), 1), games: n, wins: r.wins, mvp: r.mvp, ace: r.ace, tier, fewGames: n < FEW, best: r.best,
+      champions: Object.entries(r.ch).map(([c, v]) => [c, v.length, r2(mean(v), 1)]).sort((a, b) => b[2] - a[2]),
+      guest: guests.has(name), history: r.sc.map(x => r2(x, 1)),
+      parts: { game: r2(g, 1), stability: r2(stab, 1), sd: r2(sd, 1) },
+      stats: { kda: r2((r.k + r.a) / Math.max(r.d, 1), 2), k: r2(r.k / n, 1), d: r2(r.d / n, 1), a: r2(r.a / n, 1), dmg: Math.round(r.dmg / n), taken: Math.round(r.tkn / n), kp: r2(100 * mean(r.kp), 1), ds: r2(100 * mean(r.ds), 1), ts: r2(100 * mean(r.ts), 1) } };
   }).sort((a, b) => b.score - a.score);
   players.forEach((p, i) => p.rank = i + 1);
-  return { updatedAt: new Date().toISOString().replace(/\.\d+Z$/, "+00:00"), matchCount: used, players };
+  return { updatedAt: new Date().toISOString().replace(/\.\d+Z$/, "+00:00"), scale: 100, matchCount: used, players };
 }
 
 // ---------- 깃헙 반영 ----------
@@ -177,10 +184,10 @@ function renderPreview(out, cur, next) {
     const ch = $("td");
     if (!b) ch.append($("span", "up", "새로 등장"));
     else {
-      const d = b.rank - p.rank, ds = r2(p.score - b.score, 2);
-      ch.append($("span", d > 0 ? "up" : d < 0 ? "down" : null, d > 0 ? `▲${d}` : d < 0 ? `▼${-d}` : "–"), document.createTextNode(` (${ds >= 0 ? "+" : ""}${ds.toFixed(2)})`));
+      const d = b.rank - p.rank, ds = r2(p.score - b.score, 1);
+      ch.append($("span", d > 0 ? "up" : d < 0 ? "down" : null, d > 0 ? `▲${d}` : d < 0 ? `▼${-d}` : "–"), document.createTextNode(` (${ds >= 0 ? "+" : ""}${ds.toFixed(1)})`));
     }
-    tr.append($("td", null, String(p.rank)), $("td", null, p.name), $("td", "num", p.score.toFixed(2)), ch, $("td", "num", b ? `${b.games}→${p.games}` : String(p.games)), $("td", null, b && b.tier !== p.tier ? `${b.tier}→${p.tier}` : p.tier));
+    tr.append($("td", null, String(p.rank)), $("td", null, p.name), $("td", "num", p.score.toFixed(1)), ch, $("td", "num", b ? `${b.games}→${p.games}` : String(p.games)), $("td", null, b && b.tier !== p.tier ? `${b.tier}→${p.tier}` : p.tier));
     t.append(tr);
   });
   out.append(t);
