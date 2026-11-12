@@ -62,11 +62,16 @@ def score_match(match):
     lose_idx = [i for i in range(10) if i not in win_idx]
     mvp = max(win_idx, key=lambda i: base[i]) if win_idx else None
     ace = max(lose_idx, key=lambda i: base[i]) if lose_idx else None
+    team_rank = {}
+    for t in match["teams"]:
+        idx = sorted((i for i, (_, tt) in enumerate(players) if tt is t), key=lambda i: -base[i])
+        for r, i in enumerate(idx):
+            team_rank[i] = r + 1
     rows = []
     for i, (p, t) in enumerate(players):
         bonus = MVP_PTS if i == mvp else ACE_PTS if i == ace else 0
         rows.append({"p": p, "t": t, "score": base[i] + bonus, "mvp": i == mvp, "ace": i == ace,
-                     "ds": ds[i], "kp": kp[i], "ts": ts[i]})
+                     "ds": ds[i], "kp": kp[i], "ts": ts[i], "trank": team_rank[i]})
     return rows
 
 
@@ -96,7 +101,7 @@ def main():
                 alias[a] = m["name"]
 
     rec = defaultdict(lambda: {"sc": [], "wins": 0, "mvp": 0, "ace": 0, "champs": defaultdict(list), "best": None,
-                               "k": 0, "d": 0, "a": 0, "dmg": 0, "tkn": 0, "ds": [], "kp": [], "ts": []})
+                               "pass": 0, "k": 0, "d": 0, "a": 0, "dmg": 0, "tkn": 0, "ds": [], "kp": [], "ts": []})
     duo = defaultdict(lambda: {"games": 0, "wins": 0, "sum": 0.0})
     used = 0
     for match in matches:
@@ -122,6 +127,8 @@ def main():
             r["sc"].append(s)
             r["wins"] += 1 if t["win"] else 0
             r["mvp"] += row["mvp"]
+            if t["win"] and row["trank"] >= 4:
+                r["pass"] += 1
             r["ace"] += row["ace"]
             r["champs"][c].append(s)
             if r["best"] is None or s > r["best"][1]:
@@ -146,6 +153,7 @@ def main():
             "tier": tier_of(total), "fewGames": n < FEW_GAMES,
             "best": r["best"], "champions": champs,
             "guest": name in guests, "history": [rnd(x, 1) for x in sc],
+            "bus": {"driver": r["mvp"], "passenger": r["pass"]},
             "parts": {"game": rnd(game_avg, 1), "stability": rnd(stab, 1), "sd": rnd(sd, 1)},
             "stats": {
                 "kda": rnd((r["k"] + r["a"]) / max(r["d"], 1), 2),

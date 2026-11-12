@@ -142,6 +142,22 @@ td.num,th.num{text-align:right}
 .jrow.king .jp{border-color:var(--accent);background:var(--accent-soft)}
 .jrow.low .jp{border-style:dashed}
 @media (max-width:520px){.jrow{grid-template-columns:44px 1fr}.jrow .cls{font-size:15px}.jp{min-width:0;padding:4px 7px}.jp .jn{font-size:13px}}
+.bus-hero{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.bus-hero>div{border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.bus-hero .k{font-size:12px;color:var(--muted)}
+.bus-hero .v{font-size:16px;font-weight:700}
+.bus-hero .d{font-size:12px;color:var(--muted)}
+.bus{display:grid;grid-template-columns:minmax(0,1.1fr) 1fr 1fr auto;gap:4px 10px;align-items:center;font-size:13.5px}
+.bus .hd{font-size:11.5px;color:var(--muted);padding-bottom:2px}
+.bus .hd.r{text-align:left}.bus .hd.l{text-align:right}
+.bus .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bus .bl,.bus .br{display:flex;align-items:center;gap:6px;height:22px;font-size:12px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.bus .bl{justify-content:flex-end;border-right:1px solid var(--line);padding-right:4px}
+.bus .br{padding-left:0}
+.bus .bl i,.bus .br i{display:block;height:12px;border-radius:3px;min-width:2px}
+.bus .bl i{background:var(--accent)}.bus .br i{background:var(--bad);opacity:.75}
+.bus .tp{font-size:12px;font-weight:600;white-space:nowrap}
+@media (max-width:520px){.bus{grid-template-columns:minmax(0,1fr) 1fr 1fr;font-size:13px}.bus .tp,.bus .hd.t{display:none}}
 .scrim-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
 .scrim-foot button{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .score{font-weight:700}
@@ -262,6 +278,13 @@ td.num,th.num{text-align:right}
     <div class="sec-head"><h2>증바람 신라</h2><span class="hint">골품제: 티어가 곧 신분, 순위가 곧 관등</span></div>
     <div class="joseon" id="joseon"></div>
     <p class="note">1등은 성골 왕, S·A는 진골, B는 6두품, C는 4두품, 칼바람 기록이 없으면 노비예요. 관등은 순위대로 1관등 이벌찬부터 내려가는데, 실제 골품제처럼 신분마다 오를 수 있는 한계가 있어요. 6두품은 6관등 아찬, 4두품은 12관등 대사가 끝이에요.</p>
+  </section>
+
+  <section class="card" id="bus-sec">
+    <div class="sec-head"><h2>기장과 승객</h2><span class="hint">이긴 판에서 누가 운전했고 누가 탔나</span></div>
+    <div class="bus-hero" id="bushero"></div>
+    <div class="bus" id="bus"></div>
+    <p class="note">기장 = 이긴 판에서 팀 1등(MVP)이었던 비율, 승객 = 이긴 판에서 팀 4~5등이었던 비율이에요. 기장이 30% 이상이면 버스 기장, 승객이 60% 이상이면 VIP 승객이에요.</p>
   </section>
 
   <section class="card" id="scrim">
@@ -408,7 +431,7 @@ function applyFilter(){
   PLAYERS=ALL.filter(p=>showGuests||!p.guest).map((p,i)=>({...p,rank:i+1}));
   if(openName&&!PLAYERS.some(p=>p.name===openName))openName=null;
   document.querySelectorAll(".seg button[data-g]").forEach(b=>b.setAttribute("aria-pressed",String((b.dataset.g==="1")===showGuests)));
-  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderCorp();renderJoseon();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
+  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderCorp();renderJoseon();renderBus();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
 }
 document.querySelectorAll(".seg button[data-g]").forEach(b=>b.addEventListener("click",()=>{showGuests=b.dataset.g==="1";try{localStorage.setItem("aram-guests",showGuests?"1":"0");}catch(e){}applyFilter();}));
 
@@ -496,6 +519,24 @@ function renderJoseon(){
       if(cls==="성골")t="왕";else if(cls==="노비")t="관등 없음";else{next=Math.max(next,cap);t=next+"관등 "+GWAN[Math.min(next,17)];j.title=ROBE(next)+" 관복 · "+p.score.toFixed(1)+"점";next++;}
       j.append(el("div","jt",t),el("div","jn",p.name));ppl.append(j);});
     row.append(h,ppl);box.append(row);});
+}
+
+// ---- 기장과 승객 ----
+function busType(dr,ps){if(dr>=0.3)return"버스 기장";if(ps>=0.6)return"VIP 승객";if(ps>=0.4)return"단골 승객";if(dr>=0.15)return"부기장";return"일반 탑승객";}
+function renderBus(){
+  const box=document.getElementById("bus"),hero=document.getElementById("bushero");box.textContent="";hero.textContent="";
+  const L=PLAYERS.filter(p=>p.wins>0).map(p=>({p,dr:p.bus.driver/p.wins,ps:p.bus.passenger/p.wins})).sort((a,b)=>(b.dr-b.ps)-(a.dr-a.ps));
+  if(!L.length)return;
+  const pool=L.filter(x=>x.p.wins>=10).length?L.filter(x=>x.p.wins>=10):L;
+  const cap=pool.reduce((a,b)=>b.dr>a.dr?b:a),pas=pool.reduce((a,b)=>b.ps>a.ps?b:a);
+  [["수석 기장",cap.p.name,cap.p.wins+"승 중 "+cap.p.bus.driver+"판 운전 ("+pct(cap.dr)+")"],["VIP 승객",pas.p.name,pas.p.wins+"승 중 "+pas.p.bus.passenger+"판 탑승 ("+pct(pas.ps)+")"]].forEach(([k,v,d])=>{const x=el("div");x.append(el("div","k",k),el("div","v",v),el("div","d",d));hero.append(x);});
+  box.append(el("span","hd",""),el("span","hd l","기장"),el("span","hd r","승객"),el("span","hd t",""));
+  L.forEach(({p,dr,ps})=>{
+    const l=el("div","bl");const li=el("i");li.style.width=Math.round(dr*100)+"%";l.append(document.createTextNode(pct(dr)),li);
+    const r=el("div","br");const ri=el("i");ri.style.width=Math.round(ps*100)+"%";r.append(ri,document.createTextNode(pct(ps)));
+    l.title=p.name+" · "+p.wins+"승 중 "+p.bus.driver+"판 운전";r.title=p.name+" · "+p.wins+"승 중 "+p.bus.passenger+"판 탑승";
+    box.append(el("span","nm",p.name),l,r,el("span","tp",busType(dr,ps)));
+  });
 }
 
 // ---- 내전 황밸 ----

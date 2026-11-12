@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-12T02:01:45+00:00",
+ "updatedAt": "2026-11-12T06:19:07+00:00",
  "scale": 100,
  "matchCount": 78,
  "players": [
@@ -344,6 +344,10 @@
     48.9,
     78.3
    ],
+   "bus": {
+    "driver": 18,
+    "passenger": 5
+   },
    "parts": {
     "game": 53.4,
     "stability": 5.9,
@@ -473,6 +477,10 @@
     65.6,
     42.8
    ],
+   "bus": {
+    "driver": 6,
+    "passenger": 3
+   },
    "parts": {
     "game": 54.5,
     "stability": 3.9,
@@ -672,6 +680,10 @@
     16.7,
     12.5
    ],
+   "bus": {
+    "driver": 5,
+    "passenger": 2
+   },
    "parts": {
     "game": 44.2,
     "stability": 6.6,
@@ -783,6 +795,10 @@
     37.8,
     56.7
    ],
+   "bus": {
+    "driver": 0,
+    "passenger": 3
+   },
    "parts": {
     "game": 40.2,
     "stability": 7.9,
@@ -988,6 +1004,10 @@
     44.4,
     30.8
    ],
+   "bus": {
+    "driver": 2,
+    "passenger": 4
+   },
    "parts": {
     "game": 40.3,
     "stability": 7.2,
@@ -1163,6 +1183,10 @@
     53.3,
     60.6
    ],
+   "bus": {
+    "driver": 2,
+    "passenger": 5
+   },
    "parts": {
     "game": 39.5,
     "stability": 5.4,
@@ -1433,6 +1457,10 @@
     54.4,
     51.1
    ],
+   "bus": {
+    "driver": 4,
+    "passenger": 11
+   },
    "parts": {
     "game": 37.0,
     "stability": 5.9,
@@ -1688,6 +1716,10 @@
     2.2,
     44.4
    ],
+   "bus": {
+    "driver": 2,
+    "passenger": 17
+   },
    "parts": {
     "game": 37.2,
     "stability": 5.0,
@@ -1801,6 +1833,10 @@
     64.4,
     6.7
    ],
+   "bus": {
+    "driver": 0,
+    "passenger": 7
+   },
    "parts": {
     "game": 32.0,
     "stability": 6.2,
@@ -2070,6 +2106,10 @@
     20.0,
     38.3
    ],
+   "bus": {
+    "driver": 1,
+    "passenger": 22
+   },
    "parts": {
     "game": 30.5,
     "stability": 7.1,
@@ -2138,6 +2178,10 @@
     41.7,
     16.1
    ],
+   "bus": {
+    "driver": 0,
+    "passenger": 1
+   },
    "parts": {
     "game": 24.0,
     "stability": 6.3,

@@ -51,7 +51,8 @@ function scoreMatch(m) {
   const base = P.map((_, i) => W_DS * pctRank(ds, ds[i]) + W_KP * pctRank(kp, kp[i]) + W_KDA * pctRank(kda, kda[i]) + W_TS * pctRank(ts, ts[i]));
   const best = f => { let b = -1; P.forEach(([, t], i) => { if (f(t) && (b < 0 || base[i] > base[b])) b = i; }); return b; };
   const mvp = best(t => t.win), ace = best(t => !t.win);
-  return P.map(([p, t], i) => ({ p, t, score: base[i] + (i === mvp ? MVP_PTS : i === ace ? ACE_PTS : 0), mvp: i === mvp, ace: i === ace, ds: ds[i], kp: kp[i], ts: ts[i] }));
+  const trank = {}; m.teams.forEach(t => P.map((x, i) => i).filter(i => P[i][1] === t).sort((a, b) => base[b] - base[a]).forEach((i, r) => trank[i] = r + 1));
+  return P.map(([p, t], i) => ({ p, t, score: base[i] + (i === mvp ? MVP_PTS : i === ace ? ACE_PTS : 0), mvp: i === mvp, ace: i === ace, ds: ds[i], kp: kp[i], ts: ts[i], trank: trank[i] }));
 }
 const r2 = (x, d) => Math.round(x * 10 ** d) / 10 ** d;
 const TIERS100 = [[55, "S"], [47, "A"], [40, "B"]];
@@ -72,9 +73,9 @@ function leaderboard(matches, members, ko) {
     }
     for (const row of rows) {
       const { p, t, score: s } = row, n = alias[p.name]; if (!n) continue;
-      const r = rec[n] || (rec[n] = { sc: [], wins: 0, mvp: 0, ace: 0, ch: {}, best: null, k: 0, d: 0, a: 0, dmg: 0, tkn: 0, ds: [], kp: [], ts: [] });
+      const r = rec[n] || (rec[n] = { sc: [], wins: 0, mvp: 0, ace: 0, ch: {}, best: null, pass: 0, k: 0, d: 0, a: 0, dmg: 0, tkn: 0, ds: [], kp: [], ts: [] });
       const c = ko[p.champion] || p.champion;
-      r.sc.push(s); r.wins += t.win ? 1 : 0; r.mvp += row.mvp; r.ace += row.ace; (r.ch[c] = r.ch[c] || []).push(s);
+      r.sc.push(s); r.wins += t.win ? 1 : 0; r.mvp += row.mvp; r.ace += row.ace; if (t.win && row.trank >= 4) r.pass++; (r.ch[c] = r.ch[c] || []).push(s);
       if (!r.best || s > r.best[1]) r.best = [c, r2(s, 1)];
       r.k += p.kills; r.d += p.deaths; r.a += p.assists; r.dmg += p.damage; r.tkn += p.taken; r.ds.push(row.ds); r.kp.push(row.kp); r.ts.push(row.ts);
     }
@@ -86,6 +87,7 @@ function leaderboard(matches, members, ko) {
     return { name, score: r2(total, 1), lo: r2(Math.max(0, total - 1.96 * se), 1), hi: r2(Math.min(100, total + 1.96 * se), 1), games: n, wins: r.wins, mvp: r.mvp, ace: r.ace, tier, fewGames: n < FEW, best: r.best,
       champions: Object.entries(r.ch).map(([c, v]) => [c, v.length, r2(mean(v), 1)]).sort((a, b) => b[2] - a[2]),
       guest: guests.has(name), history: r.sc.map(x => r2(x, 1)),
+      bus: { driver: r.mvp, passenger: r.pass },
       parts: { game: r2(g, 1), stability: r2(stab, 1), sd: r2(sd, 1) },
       stats: { kda: r2((r.k + r.a) / Math.max(r.d, 1), 2), k: r2(r.k / n, 1), d: r2(r.d / n, 1), a: r2(r.a / n, 1), dmg: Math.round(r.dmg / n), taken: Math.round(r.tkn / n), kp: r2(100 * mean(r.kp), 1), ds: r2(100 * mean(r.ds), 1), ts: r2(100 * mean(r.ts), 1) } };
   }).sort((a, b) => b.score - a.score);
