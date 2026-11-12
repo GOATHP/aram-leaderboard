@@ -340,11 +340,11 @@ let SCRIM={extra:[],default:[]},picked=null,altIdx=0;
 function scrimPool(){return[...ALL.map(p=>({name:p.name,score:p.score,tier:p.tier,note:p.games+"판"+(p.fewGames?" · 판수 적음":"")})),...SCRIM.extra.map(x=>({...x}))];}
 function renderScrim(){
   const pool=scrimPool();
-  if(!picked){let saved=null;try{saved=JSON.parse(localStorage.getItem("aram-scrim")||"null");}catch(e){}
+  if(!picked){let saved=null;try{saved=JSON.parse(localStorage.getItem("aram-scrim2")||"null");}catch(e){}
     const def=(saved&&saved.length?saved:SCRIM.default).filter(n=>pool.some(p=>p.name===n));picked=new Set(def.length?def:pool.slice(0,10).map(p=>p.name));}
   const pk=document.getElementById("picks");pk.textContent="";
   pool.forEach(p=>{const lab=el("label","pick"+(picked.has(p.name)?" on":""));const cb=document.createElement("input");cb.type="checkbox";cb.checked=picked.has(p.name);
-    cb.onchange=()=>{cb.checked?picked.add(p.name):picked.delete(p.name);altIdx=0;try{localStorage.setItem("aram-scrim",JSON.stringify([...picked]));}catch(e){}renderScrim();};
+    cb.onchange=()=>{cb.checked?picked.add(p.name):picked.delete(p.name);altIdx=0;try{localStorage.setItem("aram-scrim2",JSON.stringify([...picked]));}catch(e){}renderScrim();};
     lab.append(cb,document.createTextNode(p.name));pk.append(lab);});
   const out=document.getElementById("scrimout");out.textContent="";
   const sel=pool.filter(p=>picked.has(p.name));
