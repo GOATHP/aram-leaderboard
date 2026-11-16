@@ -27,6 +27,7 @@ MVP_PTS, ACE_PTS = 10, 5
 TIER_CUTS = [(55, "S"), (47, "A"), (40, "B")]  # 그 아래는 C
 FEW_GAMES = 20
 REMAKE_TOTAL_KILLS = 10
+MIN_MEMBERS = 4  # 우리 멤버가 4명 이상 같이 한 판만 반영 (3명 이하는 평가가 공평하지 않음)
 
 
 def rnd(x, d=0):
@@ -106,6 +107,8 @@ def main():
     used = 0
     for match in matches:
         if sum(t["kills"] for t in match["teams"]) <= REMAKE_TOTAL_KILLS:
+            continue
+        if sum(1 for t in match["teams"] for p in t["players"] if p["name"] in alias) < MIN_MEMBERS:
             continue
         rows = score_match(match)
         if not rows:

@@ -3,7 +3,7 @@
 (() => {
 const PASS = "1234";
 const REPO = "GOATHP/aram-leaderboard", BRANCH = "main";
-const FEW = 20, REMAKE = 10;
+const FEW = 20, REMAKE = 10, MIN_MEMBERS = 4;
 const $ = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
 
 // ---------- 파서 (scripts/ingest.py와 같은 규칙) ----------
@@ -62,6 +62,7 @@ function leaderboard(matches, members, ko) {
   const rec = {}, duo = {}; let used = 0;
   for (const m of matches) {
     if (sum(m.teams.map(t => t.kills)) <= REMAKE) continue;
+    if (m.teams.flatMap(t => t.players).filter(p => alias[p.name]).length < MIN_MEMBERS) continue;
     const rows = scoreMatch(m); if (!rows) continue; used++;
     for (const team of m.teams) {
       const seen = new Map(); rows.filter(r => r.t === team && alias[r.p.name]).forEach(r => seen.set(alias[r.p.name] + "\u0000" + r.score, [alias[r.p.name], r.score]));
