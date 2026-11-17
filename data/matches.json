@@ -15111,5 +15111,1552 @@
     ]
    }
   ]
+ },
+ {
+  "id": "op-7277516aab",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 54,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Sett",
+      "kills": 6,
+      "deaths": 13,
+      "assists": 23,
+      "damage": 28828,
+      "taken": 74624,
+      "gold": 14265
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "MasterYi",
+      "kills": 21,
+      "deaths": 17,
+      "assists": 20,
+      "damage": 43634,
+      "taken": 52452,
+      "gold": 18506
+     },
+     {
+      "name": "정반푸",
+      "champion": "AurelionSol",
+      "kills": 13,
+      "deaths": 12,
+      "assists": 23,
+      "damage": 39986,
+      "taken": 37196,
+      "gold": 16785
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Bard",
+      "kills": 1,
+      "deaths": 5,
+      "assists": 47,
+      "damage": 29154,
+      "taken": 27394,
+      "gold": 14619
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Irelia",
+      "kills": 13,
+      "deaths": 15,
+      "assists": 20,
+      "damage": 32787,
+      "taken": 44890,
+      "gold": 16208
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 62,
+    "players": [
+     {
+      "name": "몽실아왜나를물어",
+      "champion": "Annie",
+      "kills": 16,
+      "deaths": 13,
+      "assists": 36,
+      "damage": 38484,
+      "taken": 27111,
+      "gold": 16161
+     },
+     {
+      "name": "따끔해요",
+      "champion": "Yone",
+      "kills": 15,
+      "deaths": 10,
+      "assists": 32,
+      "damage": 61862,
+      "taken": 48780,
+      "gold": 16970
+     },
+     {
+      "name": "이길생각이없다",
+      "champion": "Zeri",
+      "kills": 11,
+      "deaths": 11,
+      "assists": 26,
+      "damage": 41240,
+      "taken": 26472,
+      "gold": 17390
+     },
+     {
+      "name": "T1 훼이커",
+      "champion": "Viktor",
+      "kills": 7,
+      "deaths": 9,
+      "assists": 36,
+      "damage": 36130,
+      "taken": 23126,
+      "gold": 15520
+     },
+     {
+      "name": "23652233del",
+      "champion": "Warwick",
+      "kills": 13,
+      "deaths": 11,
+      "assists": 26,
+      "damage": 43723,
+      "taken": 66038,
+      "gold": 17156
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-77d14c909b",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 57,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Yasuo",
+      "kills": 3,
+      "deaths": 10,
+      "assists": 22,
+      "damage": 23349,
+      "taken": 22758,
+      "gold": 10760
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Skarner",
+      "kills": 10,
+      "deaths": 7,
+      "assists": 30,
+      "damage": 40278,
+      "taken": 39899,
+      "gold": 12951
+     },
+     {
+      "name": "정반푸",
+      "champion": "TahmKench",
+      "kills": 7,
+      "deaths": 4,
+      "assists": 30,
+      "damage": 28124,
+      "taken": 55975,
+      "gold": 12252
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Rengar",
+      "kills": 22,
+      "deaths": 11,
+      "assists": 11,
+      "damage": 46101,
+      "taken": 27452,
+      "gold": 14903
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Varus",
+      "kills": 15,
+      "deaths": 7,
+      "assists": 20,
+      "damage": 48780,
+      "taken": 20178,
+      "gold": 13693
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 39,
+    "players": [
+     {
+      "name": "찜닭장인",
+      "champion": "AurelionSol",
+      "kills": 18,
+      "deaths": 10,
+      "assists": 15,
+      "damage": 39846,
+      "taken": 22740,
+      "gold": 14699
+     },
+     {
+      "name": "Muniiii",
+      "champion": "Senna",
+      "kills": 5,
+      "deaths": 11,
+      "assists": 28,
+      "damage": 25619,
+      "taken": 25573,
+      "gold": 12132
+     },
+     {
+      "name": "The woolvzit",
+      "champion": "Karthus",
+      "kills": 5,
+      "deaths": 13,
+      "assists": 27,
+      "damage": 35294,
+      "taken": 29534,
+      "gold": 11683
+     },
+     {
+      "name": "삼공이",
+      "champion": "Irelia",
+      "kills": 6,
+      "deaths": 13,
+      "assists": 23,
+      "damage": 23649,
+      "taken": 50248,
+      "gold": 11237
+     },
+     {
+      "name": "A K",
+      "champion": "Blitzcrank",
+      "kills": 5,
+      "deaths": 10,
+      "assists": 24,
+      "damage": 25288,
+      "taken": 63645,
+      "gold": 11103
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-f34476fb8f",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 63,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Velkoz",
+      "kills": 12,
+      "deaths": 12,
+      "assists": 27,
+      "damage": 25207,
+      "taken": 27977,
+      "gold": 17023
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Morgana",
+      "kills": 8,
+      "deaths": 10,
+      "assists": 40,
+      "damage": 30683,
+      "taken": 31945,
+      "gold": 16827
+     },
+     {
+      "name": "정반푸",
+      "champion": "Xerath",
+      "kills": 13,
+      "deaths": 8,
+      "assists": 30,
+      "damage": 24956,
+      "taken": 20801,
+      "gold": 17202
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Seraphine",
+      "kills": 11,
+      "deaths": 6,
+      "assists": 38,
+      "damage": 20746,
+      "taken": 21109,
+      "gold": 17488
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Xayah",
+      "kills": 19,
+      "deaths": 14,
+      "assists": 27,
+      "damage": 45692,
+      "taken": 44698,
+      "gold": 20046
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 50,
+    "players": [
+     {
+      "name": "너희유륜팡팡",
+      "champion": "Gragas",
+      "kills": 9,
+      "deaths": 15,
+      "assists": 20,
+      "damage": 17454,
+      "taken": 41759,
+      "gold": 15760
+     },
+     {
+      "name": "썬STAR",
+      "champion": "FiddleSticks",
+      "kills": 10,
+      "deaths": 15,
+      "assists": 20,
+      "damage": 43292,
+      "taken": 47082,
+      "gold": 16328
+     },
+     {
+      "name": "Spiro Angelic",
+      "champion": "Lux",
+      "kills": 5,
+      "deaths": 8,
+      "assists": 34,
+      "damage": 24893,
+      "taken": 19336,
+      "gold": 17336
+     },
+     {
+      "name": "그린티는 녹차가 아니다",
+      "champion": "KogMaw",
+      "kills": 16,
+      "deaths": 13,
+      "assists": 19,
+      "damage": 35356,
+      "taken": 22780,
+      "gold": 18170
+     },
+     {
+      "name": "납치상황극",
+      "champion": "Orianna",
+      "kills": 10,
+      "deaths": 12,
+      "assists": 24,
+      "damage": 20982,
+      "taken": 26321,
+      "gold": 17020
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-83d2504139",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 47,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "MissFortune",
+      "kills": 11,
+      "deaths": 4,
+      "assists": 27,
+      "damage": 18122,
+      "taken": 8178,
+      "gold": 8972
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Thresh",
+      "kills": 11,
+      "deaths": 4,
+      "assists": 32,
+      "damage": 23606,
+      "taken": 12270,
+      "gold": 8540
+     },
+     {
+      "name": "정반푸",
+      "champion": "Jhin",
+      "kills": 13,
+      "deaths": 5,
+      "assists": 27,
+      "damage": 23900,
+      "taken": 8036,
+      "gold": 9172
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "TwistedFate",
+      "kills": 4,
+      "deaths": 4,
+      "assists": 34,
+      "damage": 21609,
+      "taken": 6877,
+      "gold": 7762
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Poppy",
+      "kills": 8,
+      "deaths": 3,
+      "assists": 26,
+      "damage": 17420,
+      "taken": 14951,
+      "gold": 8116
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 20,
+    "players": [
+     {
+      "name": "도란의아들야도란",
+      "champion": "Fiora",
+      "kills": 1,
+      "deaths": 11,
+      "assists": 9,
+      "damage": 10561,
+      "taken": 20107,
+      "gold": 6129
+     },
+     {
+      "name": "JaVale McGee",
+      "champion": "Vayne",
+      "kills": 3,
+      "deaths": 8,
+      "assists": 4,
+      "damage": 6048,
+      "taken": 11730,
+      "gold": 6833
+     },
+     {
+      "name": "심한욕은 하지마",
+      "champion": "Malphite",
+      "kills": 8,
+      "deaths": 9,
+      "assists": 5,
+      "damage": 12370,
+      "taken": 47465,
+      "gold": 8789
+     },
+     {
+      "name": "부먹펩시파인애플피자지코민트초코",
+      "champion": "Kayle",
+      "kills": 2,
+      "deaths": 10,
+      "assists": 11,
+      "damage": 5275,
+      "taken": 16038,
+      "gold": 6547
+     },
+     {
+      "name": "호구미호구",
+      "champion": "Tryndamere",
+      "kills": 6,
+      "deaths": 9,
+      "assists": 8,
+      "damage": 9580,
+      "taken": 27016,
+      "gold": 8165
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-71ea73c71c",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 61,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Rakan",
+      "kills": 4,
+      "deaths": 7,
+      "assists": 41,
+      "damage": 13693,
+      "taken": 69352,
+      "gold": 13727
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Singed",
+      "kills": 10,
+      "deaths": 12,
+      "assists": 29,
+      "damage": 28613,
+      "taken": 41191,
+      "gold": 14750
+     },
+     {
+      "name": "정반푸",
+      "champion": "Jhin",
+      "kills": 17,
+      "deaths": 7,
+      "assists": 14,
+      "damage": 40229,
+      "taken": 21819,
+      "gold": 16036
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "TwistedFate",
+      "kills": 3,
+      "deaths": 7,
+      "assists": 37,
+      "damage": 38984,
+      "taken": 16285,
+      "gold": 14285
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Sylas",
+      "kills": 27,
+      "deaths": 7,
+      "assists": 13,
+      "damage": 52809,
+      "taken": 46627,
+      "gold": 16857
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 40,
+    "players": [
+     {
+      "name": "아 박은건데",
+      "champion": "Shen",
+      "kills": 7,
+      "deaths": 12,
+      "assists": 22,
+      "damage": 23543,
+      "taken": 86960,
+      "gold": 13368
+     },
+     {
+      "name": "아빠는 그냥시민",
+      "champion": "Varus",
+      "kills": 11,
+      "deaths": 12,
+      "assists": 18,
+      "damage": 44577,
+      "taken": 25960,
+      "gold": 14975
+     },
+     {
+      "name": "엄마는 블랙핑크",
+      "champion": "Jinx",
+      "kills": 8,
+      "deaths": 15,
+      "assists": 20,
+      "damage": 27894,
+      "taken": 25887,
+      "gold": 14103
+     },
+     {
+      "name": "메론주스",
+      "champion": "Twitch",
+      "kills": 5,
+      "deaths": 13,
+      "assists": 22,
+      "damage": 23585,
+      "taken": 25944,
+      "gold": 14288
+     },
+     {
+      "name": "킹장연",
+      "champion": "MissFortune",
+      "kills": 9,
+      "deaths": 10,
+      "assists": 23,
+      "damage": 38462,
+      "taken": 22525,
+      "gold": 14616
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-bae009a690",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 62,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Sona",
+      "kills": 4,
+      "deaths": 5,
+      "assists": 54,
+      "damage": 15535,
+      "taken": 23722,
+      "gold": 14786
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Shaco",
+      "kills": 18,
+      "deaths": 10,
+      "assists": 26,
+      "damage": 31143,
+      "taken": 27832,
+      "gold": 16033
+     },
+     {
+      "name": "정반푸",
+      "champion": "Urgot",
+      "kills": 8,
+      "deaths": 11,
+      "assists": 30,
+      "damage": 24974,
+      "taken": 56530,
+      "gold": 14362
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Qiyana",
+      "kills": 13,
+      "deaths": 9,
+      "assists": 27,
+      "damage": 35542,
+      "taken": 27090,
+      "gold": 15733
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Zed",
+      "kills": 19,
+      "deaths": 11,
+      "assists": 26,
+      "damage": 52895,
+      "taken": 32614,
+      "gold": 16468
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 46,
+    "players": [
+     {
+      "name": "디케여신",
+      "champion": "Yone",
+      "kills": 11,
+      "deaths": 15,
+      "assists": 20,
+      "damage": 36609,
+      "taken": 35919,
+      "gold": 15406
+     },
+     {
+      "name": "순박하구나",
+      "champion": "Akali",
+      "kills": 6,
+      "deaths": 13,
+      "assists": 19,
+      "damage": 22635,
+      "taken": 32776,
+      "gold": 13261
+     },
+     {
+      "name": "쥐도짭새도모르게",
+      "champion": "Nautilus",
+      "kills": 8,
+      "deaths": 9,
+      "assists": 28,
+      "damage": 27009,
+      "taken": 43766,
+      "gold": 14611
+     },
+     {
+      "name": "고래왕자",
+      "champion": "Katarina",
+      "kills": 15,
+      "deaths": 13,
+      "assists": 18,
+      "damage": 29645,
+      "taken": 31456,
+      "gold": 15741
+     },
+     {
+      "name": "양양양냥양냥",
+      "champion": "Blitzcrank",
+      "kills": 6,
+      "deaths": 12,
+      "assists": 22,
+      "damage": 21116,
+      "taken": 28734,
+      "gold": 13689
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-85ebdcb004",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 60,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Ezreal",
+      "kills": 11,
+      "deaths": 9,
+      "assists": 18,
+      "damage": 18048,
+      "taken": 25302,
+      "gold": 13334
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Sona",
+      "kills": 13,
+      "deaths": 6,
+      "assists": 42,
+      "damage": 35221,
+      "taken": 28422,
+      "gold": 14759
+     },
+     {
+      "name": "정반푸",
+      "champion": "Zilean",
+      "kills": 10,
+      "deaths": 12,
+      "assists": 29,
+      "damage": 22997,
+      "taken": 27848,
+      "gold": 13773
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Gragas",
+      "kills": 13,
+      "deaths": 6,
+      "assists": 25,
+      "damage": 36124,
+      "taken": 22412,
+      "gold": 13732
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Jinx",
+      "kills": 13,
+      "deaths": 11,
+      "assists": 25,
+      "damage": 31357,
+      "taken": 26714,
+      "gold": 14013
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 44,
+    "players": [
+     {
+      "name": "푸러늉",
+      "champion": "Riven",
+      "kills": 8,
+      "deaths": 13,
+      "assists": 18,
+      "damage": 31346,
+      "taken": 29965,
+      "gold": 12510
+     },
+     {
+      "name": "히나이",
+      "champion": "Senna",
+      "kills": 2,
+      "deaths": 11,
+      "assists": 26,
+      "damage": 9057,
+      "taken": 24183,
+      "gold": 12009
+     },
+     {
+      "name": "evenomal",
+      "champion": "Caitlyn",
+      "kills": 12,
+      "deaths": 15,
+      "assists": 16,
+      "damage": 28167,
+      "taken": 33060,
+      "gold": 13450
+     },
+     {
+      "name": "능금짬뽕재메이햄",
+      "champion": "Heimerdinger",
+      "kills": 11,
+      "deaths": 10,
+      "assists": 18,
+      "damage": 23792,
+      "taken": 27616,
+      "gold": 13670
+     },
+     {
+      "name": "6n23RP",
+      "champion": "Chogath",
+      "kills": 11,
+      "deaths": 11,
+      "assists": 19,
+      "damage": 24775,
+      "taken": 35612,
+      "gold": 13796
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-e13fb954d7",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 53,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Ashe",
+      "kills": 5,
+      "deaths": 13,
+      "assists": 26,
+      "damage": 17522,
+      "taken": 28563,
+      "gold": 18335
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "KogMaw",
+      "kills": 12,
+      "deaths": 12,
+      "assists": 17,
+      "damage": 30323,
+      "taken": 32835,
+      "gold": 19566
+     },
+     {
+      "name": "정반푸",
+      "champion": "Heimerdinger",
+      "kills": 10,
+      "deaths": 8,
+      "assists": 20,
+      "damage": 31750,
+      "taken": 30863,
+      "gold": 20351
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Taliyah",
+      "kills": 12,
+      "deaths": 13,
+      "assists": 20,
+      "damage": 37378,
+      "taken": 28423,
+      "gold": 19847
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Vayne",
+      "kills": 14,
+      "deaths": 12,
+      "assists": 14,
+      "damage": 42329,
+      "taken": 37191,
+      "gold": 19605
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 58,
+    "players": [
+     {
+      "name": "딩크레",
+      "champion": "Gragas",
+      "kills": 7,
+      "deaths": 9,
+      "assists": 21,
+      "damage": 23384,
+      "taken": 42795,
+      "gold": 17871
+     },
+     {
+      "name": "동대문시장할머니",
+      "champion": "Corki",
+      "kills": 17,
+      "deaths": 14,
+      "assists": 20,
+      "damage": 37915,
+      "taken": 38248,
+      "gold": 20540
+     },
+     {
+      "name": "에헤조점례이거",
+      "champion": "Blitzcrank",
+      "kills": 12,
+      "deaths": 10,
+      "assists": 12,
+      "damage": 25463,
+      "taken": 33666,
+      "gold": 18923
+     },
+     {
+      "name": "불주먹 치이카와",
+      "champion": "Ziggs",
+      "kills": 8,
+      "deaths": 11,
+      "assists": 24,
+      "damage": 25612,
+      "taken": 31337,
+      "gold": 18851
+     },
+     {
+      "name": "저건 못잡아",
+      "champion": "Orianna",
+      "kills": 14,
+      "deaths": 9,
+      "assists": 28,
+      "damage": 38826,
+      "taken": 23757,
+      "gold": 20594
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-d1c7de7b01",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 75,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Senna",
+      "kills": 9,
+      "deaths": 12,
+      "assists": 43,
+      "damage": 37316,
+      "taken": 35040,
+      "gold": 21437
+     },
+     {
+      "name": "정반푸",
+      "champion": "Udyr",
+      "kills": 19,
+      "deaths": 14,
+      "assists": 33,
+      "damage": 66499,
+      "taken": 39917,
+      "gold": 22626
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Syndra",
+      "kills": 18,
+      "deaths": 9,
+      "assists": 30,
+      "damage": 72493,
+      "taken": 25052,
+      "gold": 22028
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Aatrox",
+      "kills": 14,
+      "deaths": 17,
+      "assists": 28,
+      "damage": 59011,
+      "taken": 63397,
+      "gold": 20791
+     },
+     {
+      "name": "겨울장마",
+      "champion": "Swain",
+      "kills": 15,
+      "deaths": 9,
+      "assists": 43,
+      "damage": 60977,
+      "taken": 118671,
+      "gold": 22114
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 61,
+    "players": [
+     {
+      "name": "T1 zeus",
+      "champion": "Locke",
+      "kills": 26,
+      "deaths": 17,
+      "assists": 17,
+      "damage": 47607,
+      "taken": 62575,
+      "gold": 21963
+     },
+     {
+      "name": "비운의향기",
+      "champion": "Zyra",
+      "kills": 6,
+      "deaths": 10,
+      "assists": 40,
+      "damage": 50261,
+      "taken": 31427,
+      "gold": 20585
+     },
+     {
+      "name": "류지현보고싶다",
+      "champion": "Ornn",
+      "kills": 3,
+      "deaths": 15,
+      "assists": 41,
+      "damage": 34372,
+      "taken": 92262,
+      "gold": 18219
+     },
+     {
+      "name": "세나와랜턴속에서",
+      "champion": "Corki",
+      "kills": 23,
+      "deaths": 15,
+      "assists": 26,
+      "damage": 88214,
+      "taken": 47251,
+      "gold": 23992
+     },
+     {
+      "name": "최강한남민석",
+      "champion": "Illaoi",
+      "kills": 3,
+      "deaths": 18,
+      "assists": 31,
+      "damage": 37618,
+      "taken": 83283,
+      "gold": 18942
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-6591c9698a",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 48,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Smolder",
+      "kills": 5,
+      "deaths": 7,
+      "assists": 19,
+      "damage": 17476,
+      "taken": 16794,
+      "gold": 11733
+     },
+     {
+      "name": "붕 새",
+      "champion": "Xerath",
+      "kills": 6,
+      "deaths": 3,
+      "assists": 29,
+      "damage": 24912,
+      "taken": 10180,
+      "gold": 12200
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Trundle",
+      "kills": 16,
+      "deaths": 7,
+      "assists": 19,
+      "damage": 30137,
+      "taken": 38405,
+      "gold": 14421
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "TahmKench",
+      "kills": 9,
+      "deaths": 6,
+      "assists": 14,
+      "damage": 23137,
+      "taken": 34654,
+      "gold": 12248
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Orianna",
+      "kills": 12,
+      "deaths": 5,
+      "assists": 25,
+      "damage": 27974,
+      "taken": 13160,
+      "gold": 13125
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 28,
+    "players": [
+     {
+      "name": "G글G글3겹살",
+      "champion": "Kalista",
+      "kills": 5,
+      "deaths": 10,
+      "assists": 10,
+      "damage": 15137,
+      "taken": 19944,
+      "gold": 11901
+     },
+     {
+      "name": "노빡9",
+      "champion": "Swain",
+      "kills": 4,
+      "deaths": 7,
+      "assists": 16,
+      "damage": 16855,
+      "taken": 45186,
+      "gold": 11345
+     },
+     {
+      "name": "마인드컨트롤중",
+      "champion": "Jhin",
+      "kills": 8,
+      "deaths": 11,
+      "assists": 13,
+      "damage": 27359,
+      "taken": 18926,
+      "gold": 14004
+     },
+     {
+      "name": "summer",
+      "champion": "Akali",
+      "kills": 8,
+      "deaths": 10,
+      "assists": 10,
+      "damage": 22901,
+      "taken": 27680,
+      "gold": 12401
+     },
+     {
+      "name": "이제 다시 서폿",
+      "champion": "Veigar",
+      "kills": 3,
+      "deaths": 10,
+      "assists": 13,
+      "damage": 14136,
+      "taken": 18859,
+      "gold": 11154
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-37f4b337f6",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": false,
+    "kills": 50,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Nautilus",
+      "kills": 5,
+      "deaths": 13,
+      "assists": 24,
+      "damage": 20299,
+      "taken": 74804,
+      "gold": 16517
+     },
+     {
+      "name": "붕 새",
+      "champion": "Kennen",
+      "kills": 6,
+      "deaths": 9,
+      "assists": 26,
+      "damage": 34182,
+      "taken": 27827,
+      "gold": 17701
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Tristana",
+      "kills": 22,
+      "deaths": 11,
+      "assists": 13,
+      "damage": 67222,
+      "taken": 36454,
+      "gold": 20938
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Zoe",
+      "kills": 8,
+      "deaths": 10,
+      "assists": 26,
+      "damage": 32599,
+      "taken": 23374,
+      "gold": 17242
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Jax",
+      "kills": 9,
+      "deaths": 13,
+      "assists": 24,
+      "damage": 38200,
+      "taken": 65798,
+      "gold": 17662
+     }
+    ]
+   },
+   {
+    "win": true,
+    "kills": 56,
+    "players": [
+     {
+      "name": "최석주",
+      "champion": "Yone",
+      "kills": 22,
+      "deaths": 9,
+      "assists": 15,
+      "damage": 70018,
+      "taken": 41660,
+      "gold": 21174
+     },
+     {
+      "name": "긔요미공쥬",
+      "champion": "Alistar",
+      "kills": 0,
+      "deaths": 11,
+      "assists": 35,
+      "damage": 7478,
+      "taken": 56423,
+      "gold": 15901
+     },
+     {
+      "name": "CAPOERA",
+      "champion": "AurelionSol",
+      "kills": 12,
+      "deaths": 8,
+      "assists": 29,
+      "damage": 48182,
+      "taken": 22153,
+      "gold": 18946
+     },
+     {
+      "name": "류성민",
+      "champion": "Sett",
+      "kills": 9,
+      "deaths": 14,
+      "assists": 28,
+      "damage": 43103,
+      "taken": 65224,
+      "gold": 17863
+     },
+     {
+      "name": "제발당직그만",
+      "champion": "Teemo",
+      "kills": 13,
+      "deaths": 8,
+      "assists": 25,
+      "damage": 46882,
+      "taken": 25881,
+      "gold": 19221
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-c9ad21413b",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": true,
+    "kills": 86,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Nidalee",
+      "kills": 11,
+      "deaths": 12,
+      "assists": 40,
+      "damage": 53050,
+      "taken": 45893,
+      "gold": 22555
+     },
+     {
+      "name": "붕 새",
+      "champion": "LeeSin",
+      "kills": 34,
+      "deaths": 9,
+      "assists": 45,
+      "damage": 98691,
+      "taken": 73916,
+      "gold": 28218
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Sivir",
+      "kills": 10,
+      "deaths": 13,
+      "assists": 46,
+      "damage": 43291,
+      "taken": 37545,
+      "gold": 25338
+     },
+     {
+      "name": "막창의 신 박진원",
+      "champion": "Ashe",
+      "kills": 6,
+      "deaths": 6,
+      "assists": 45,
+      "damage": 23610,
+      "taken": 18990,
+      "gold": 21913
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Jayce",
+      "kills": 25,
+      "deaths": 15,
+      "assists": 32,
+      "damage": 62534,
+      "taken": 38281,
+      "gold": 26903
+     }
+    ]
+   },
+   {
+    "win": false,
+    "kills": 55,
+    "players": [
+     {
+      "name": "수미턱",
+      "champion": "Smolder",
+      "kills": 13,
+      "deaths": 17,
+      "assists": 25,
+      "damage": 43535,
+      "taken": 45645,
+      "gold": 24432
+     },
+     {
+      "name": "너임마장녀",
+      "champion": "Nasus",
+      "kills": 6,
+      "deaths": 15,
+      "assists": 27,
+      "damage": 33602,
+      "taken": 67675,
+      "gold": 22184
+     },
+     {
+      "name": "모 노",
+      "champion": "Zyra",
+      "kills": 3,
+      "deaths": 17,
+      "assists": 23,
+      "damage": 26882,
+      "taken": 54031,
+      "gold": 20500
+     },
+     {
+      "name": "빡 구",
+      "champion": "Shaco",
+      "kills": 24,
+      "deaths": 20,
+      "assists": 18,
+      "damage": 56546,
+      "taken": 60380,
+      "gold": 25080
+     },
+     {
+      "name": "미드솔킬이요",
+      "champion": "Yone",
+      "kills": 9,
+      "deaths": 17,
+      "assists": 18,
+      "damage": 35507,
+      "taken": 65611,
+      "gold": 22376
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "op-2d82908b4d",
+  "date": null,
+  "source": "paste",
+  "teams": [
+   {
+    "win": false,
+    "kills": 43,
+    "players": [
+     {
+      "name": "Rstudio",
+      "champion": "Ahri",
+      "kills": 8,
+      "deaths": 12,
+      "assists": 23,
+      "damage": 34697,
+      "taken": 24002,
+      "gold": 11986
+     },
+     {
+      "name": "네박자쿵짝",
+      "champion": "Braum",
+      "kills": 4,
+      "deaths": 12,
+      "assists": 30,
+      "damage": 32718,
+      "taken": 58478,
+      "gold": 10808
+     },
+     {
+      "name": "붕 새",
+      "champion": "Olaf",
+      "kills": 19,
+      "deaths": 13,
+      "assists": 16,
+      "damage": 53731,
+      "taken": 46380,
+      "gold": 15017
+     },
+     {
+      "name": "분위기 메이커",
+      "champion": "Rell",
+      "kills": 4,
+      "deaths": 10,
+      "assists": 27,
+      "damage": 20709,
+      "taken": 56757,
+      "gold": 10935
+     },
+     {
+      "name": "리얼비버",
+      "champion": "Yone",
+      "kills": 8,
+      "deaths": 13,
+      "assists": 31,
+      "damage": 58759,
+      "taken": 39702,
+      "gold": 13606
+     }
+    ]
+   },
+   {
+    "win": true,
+    "kills": 60,
+    "players": [
+     {
+      "name": "가츠오부시",
+      "champion": "Singed",
+      "kills": 6,
+      "deaths": 8,
+      "assists": 46,
+      "damage": 39587,
+      "taken": 46214,
+      "gold": 12568
+     },
+     {
+      "name": "안녕내친구티버",
+      "champion": "Nidalee",
+      "kills": 16,
+      "deaths": 6,
+      "assists": 34,
+      "damage": 45186,
+      "taken": 24496,
+      "gold": 14011
+     },
+     {
+      "name": "본캐있숩니다",
+      "champion": "MonkeyKing",
+      "kills": 13,
+      "deaths": 11,
+      "assists": 35,
+      "damage": 50038,
+      "taken": 57470,
+      "gold": 13324
+     },
+     {
+      "name": "사람밥쳐먹고개소리제발금지",
+      "champion": "Sion",
+      "kills": 10,
+      "deaths": 7,
+      "assists": 42,
+      "damage": 34949,
+      "taken": 55314,
+      "gold": 13781
+     },
+     {
+      "name": "FLY",
+      "champion": "XinZhao",
+      "kills": 15,
+      "deaths": 11,
+      "assists": 27,
+      "damage": 40804,
+      "taken": 49559,
+      "gold": 13912
+     }
+    ]
+   }
+  ]
  }
 ]
