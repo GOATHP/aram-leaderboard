@@ -158,6 +158,20 @@ td.num,th.num{text-align:right}
 .bus .bl i{background:var(--accent)}.bus .br i{background:var(--bad);opacity:.75}
 .bus .tp{font-size:12px;font-weight:600;white-space:nowrap}
 @media (max-width:520px){.bus{grid-template-columns:minmax(0,1fr) 1fr 1fr;font-size:13px}.bus .tp,.bus .hd.t{display:none}}
+.epl{width:100%;border-collapse:collapse;font-size:14px}
+.epl td,.epl th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.epl th{font-size:12px;color:var(--muted);font-weight:500}
+.epl .pos{width:34px;font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.epl .ab{display:inline-block;min-width:36px;text-align:center;font-size:11px;font-weight:700;padding:2px 5px;border-radius:5px;border:1px solid var(--line);margin-right:6px;color:var(--muted)}
+.epl .tm{white-space:nowrap}
+.epl .mb{font-weight:600}
+.epl .num{text-align:right;font-variant-numeric:tabular-nums}
+.epl tr.z-ucl td:first-child{box-shadow:inset 3px 0 var(--accent)}
+.epl tr.z-uel td:first-child{box-shadow:inset 3px 0 var(--muted)}
+.epl tr.z-rel td:first-child{box-shadow:inset 3px 0 var(--bad)}
+.epl .zone{font-size:11.5px;font-weight:600}
+.epl .zone.ucl{color:var(--accent)}.epl .zone.rel{color:var(--bad)}.epl .zone.uel{color:var(--muted)}
+@media (max-width:520px){.epl .hide-m,.epl .ab{display:none}.epl .tm{white-space:normal;word-break:keep-all}.epl td,.epl th{padding:6px 4px;font-size:13px}.epl .pos{width:24px}}
 .scrim-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
 .scrim-foot button{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .score{font-weight:700}
@@ -285,6 +299,12 @@ td.num,th.num{text-align:right}
     <div class="bus-hero" id="bushero"></div>
     <div class="bus" id="bus"></div>
     <p class="note">기장 = 이긴 판에서 팀 1등(MVP)이었던 비율, 승객 = 이긴 판에서 팀 4~5등이었던 비율이에요. 기장이 30% 이상이면 버스 기장, 승객이 60% 이상이면 VIP 승객이에요.</p>
+  </section>
+
+  <section class="card" id="epl-sec">
+    <div class="sec-head"><h2>증바람 프리미어리그</h2><span class="hint" id="eplasof"></span></div>
+    <table class="epl" id="epl"><thead><tr><th class="pos">순위</th><th>구단</th><th>멤버</th><th class="num">점수</th><th class="hide-m">비고</th></tr></thead><tbody></tbody></table>
+    <p class="note">우리 순위를 실제 프리미어리그 20개 구단 순위에 고르게 펼쳐 앉혔어요. 1등은 리그 1위 구단, 꼴찌는 20위 구단이에요. 1~4위는 챔피언스리그, 5~6위는 유로파리그, 18~20위는 강등권이에요.</p>
   </section>
 
   <section class="card" id="scrim">
@@ -431,7 +451,7 @@ function applyFilter(){
   PLAYERS=ALL.filter(p=>showGuests||!p.guest).map((p,i)=>({...p,rank:i+1}));
   if(openName&&!PLAYERS.some(p=>p.name===openName))openName=null;
   document.querySelectorAll(".seg button[data-g]").forEach(b=>b.setAttribute("aria-pressed",String((b.dataset.g==="1")===showGuests)));
-  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderCorp();renderJoseon();renderBus();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
+  const tres=computeTitles();renderStats(DATA);renderBoard();renderTitles(tres);renderDuos();renderCorp();renderJoseon();renderBus();renderEPL();renderDetail();renderTiers();setupChamps();renderBars();setupTrend();
 }
 document.querySelectorAll(".seg button[data-g]").forEach(b=>b.addEventListener("click",()=>{showGuests=b.dataset.g==="1";try{localStorage.setItem("aram-guests",showGuests?"1":"0");}catch(e){}applyFilter();}));
 
@@ -539,6 +559,23 @@ function renderBus(){
   });
 }
 
+// ---- 증바람 프리미어리그 ----
+let EPL=null;
+function renderEPL(){
+  const tb=document.querySelector("#epl tbody");if(!tb)return;tb.textContent="";
+  if(!EPL||!PLAYERS.length)return;
+  document.getElementById("eplasof").textContent="실제 순위 기준일 "+EPL.asOf;
+  const n=PLAYERS.length,T=EPL.table,last=T.length;
+  PLAYERS.forEach((p,i)=>{
+    const pos=n===1?1:Math.round(1+i*(last-1)/(n-1)),t=T.find(x=>x.pos===pos)||T[T.length-1];
+    const zone=pos<=4?["ucl","챔피언스리그"]:pos<=6?["uel","유로파리그"]:pos>=last-2?["rel","강등권"]:["",""];
+    const tr=el("tr",zone[0]?"z-"+zone[0]:"");
+    const tm=el("td","tm");tm.append(el("span","ab",t.abbr),document.createTextNode(t.name));
+    const z=el("td","hide-m");if(zone[1])z.append(el("span","zone "+zone[0],zone[1]));
+    tr.append(el("td","pos",String(pos)),tm,el("td","mb",p.name),el("td","num",p.score.toFixed(1)),z);tb.append(tr);
+  });
+}
+
 // ---- 내전 황밸 ----
 let SCRIM={extra:[],default:[]},picked=null,altIdx=0;
 function scrimPool(){return[...ALL.map(p=>({name:p.name,score:p.score,tier:p.tier,note:p.games+"판"+(p.fewGames?" · 판수 적음":"")})),...SCRIM.extra.map(x=>({...x}))];}
@@ -634,6 +671,7 @@ let rt;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>
 
 fetch("data/leaderboard.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
   DATA=d;ALL=d.players;applyFilter();
+  fetch("data/epl.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(x=>{if(x){EPL=x;renderEPL();}}).catch(()=>{});
   fetch("data/scrim.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(x=>{if(x)SCRIM=x;}).catch(()=>{}).finally(()=>{renderScrim();renderCorp();renderJoseon();});
 }).catch(e=>{console.error(e);const u=document.getElementById("updated");u.textContent="순위 데이터를 불러오지 못했어요. data/leaderboard.json이 저장소에 있는지 확인해 주세요.";u.classList.add("err");});
 </script>

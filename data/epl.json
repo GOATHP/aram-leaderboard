@@ -1,0 +1,26 @@
+{
+  "_설명": "프리미어리그 실제 순위표 (멤버를 대입할 때 씀). 갱신할 때 asOf도 같이 바꿀 것.",
+  "asOf": "2026-11-17",
+  "table": [
+    {"pos": 1, "abbr": "ARS", "name": "아스널", "pts": 27},
+    {"pos": 2, "abbr": "BRI", "name": "브라이턴", "pts": 22},
+    {"pos": 3, "abbr": "MCI", "name": "맨체스터 시티", "pts": 21},
+    {"pos": 4, "abbr": "LIV", "name": "리버풀", "pts": 18},
+    {"pos": 5, "abbr": "CHE", "name": "첼시", "pts": 16},
+    {"pos": 6, "abbr": "EVE", "name": "에버턴", "pts": 16},
+    {"pos": 7, "abbr": "BOU", "name": "본머스", "pts": 15},
+    {"pos": 8, "abbr": "BRE", "name": "브렌트퍼드", "pts": 14},
+    {"pos": 9, "abbr": "LEE", "name": "리즈 유나이티드", "pts": 14},
+    {"pos": 10, "abbr": "AVL", "name": "애스턴 빌라", "pts": 13},
+    {"pos": 11, "abbr": "TOT", "name": "토트넘", "pts": 12},
+    {"pos": 12, "abbr": "NEW", "name": "뉴캐슬", "pts": 12},
+    {"pos": 13, "abbr": "HUL", "name": "헐 시티", "pts": 11},
+    {"pos": 14, "abbr": "IPS", "name": "입스위치", "pts": 11},
+    {"pos": 15, "abbr": "FUL", "name": "풀럼", "pts": 10},
+    {"pos": 16, "abbr": "NFO", "name": "노팅엄 포레스트", "pts": 9},
+    {"pos": 17, "abbr": "COV", "name": "코번트리", "pts": 9},
+    {"pos": 18, "abbr": "MUN", "name": "맨체스터 유나이티드", "pts": 8},
+    {"pos": 19, "abbr": "SUN", "name": "선덜랜드", "pts": 8},
+    {"pos": 20, "abbr": "CRY", "name": "크리스털 팰리스", "pts": 7}
+  ]
+}
